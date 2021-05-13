@@ -17,11 +17,9 @@ int startGame()
 
 void clear()
 {
-#ifndef _WIN64
+#if defined(_WIN64) || defined(_WIN32)
     system("cls");
-#elif _WIN32
-    system("cls");
-#elif __linux__
+#elif defined(__linux__)
     system("clear");
 #else
 #error "OS not supported compilation aborted!"
