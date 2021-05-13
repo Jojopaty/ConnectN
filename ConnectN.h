@@ -1,5 +1,6 @@
 #include <stdio.h>
 #include <stdlib.h>
+#include <string.h>
 #include "colors.h"
 
 /**
@@ -9,8 +10,17 @@
  */
 int startGame();
 
+
+
 /**
  * @brief Functions that clears the command prompt supporting both Windows and Linux OS.
  * 
  */
 void clear();
+
+/**
+ * @brief Funtion that checks the input of an integer
+ * 
+ * @return int The desired integer or -INT_MAX if not valid
+ */
+int safeIntInput();
