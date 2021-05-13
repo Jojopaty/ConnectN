@@ -17,6 +17,29 @@ int startGame()
     return startChoice;
 }
 
+GRID* createAndInitializeGrid(){
+    GRID* newGrid;
+    int input = 0;
+    printf("Quelle est le nombre de colones du jeu ? ");
+    input = safeIntInput();
+    while(input < 1){
+        printf(RED "Le nombre entré n'est pas correct\n" RESET "Quel est le nombre de colones du jeu ? ");
+        input = safeIntInput();
+    }
+    newGrid->col = input;
+
+    printf("Quelle est le nombre de lignes du jeu ? ");
+    input = safeIntInput();
+    while(input < 1){
+        printf(RED "Le nombre entré n'est pas correct\n" RESET "Quel est le nombre de lignes du jeu ? ");
+        input = safeIntInput();
+    }
+    newGrid->lin = input;
+
+    return newGrid;
+}
+
+
 void clear()
 {
 #if defined(_WIN64) || defined(_WIN32)
@@ -36,7 +59,7 @@ int safeIntInput()
 
     if (sscanf(input, "%d", &num) != 1)
     {
-        return __INT_MAX__;
+        return -__INT_MAX__;
     }
     return num;
 }

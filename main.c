@@ -13,11 +13,12 @@
 
 int main(int argc, char *argv[])
 {
-
     switch (startGame())
     {
     case 1:
-        printf(BLU "Starting the game\n" RESET);
+         
+        createAndInitializeGrid();
+        
         break;
     case 2:
         printf(BLU "Loading last saved game\n" RESET);

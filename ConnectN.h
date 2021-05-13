@@ -3,6 +3,15 @@
 #include <string.h>
 #include "colors.h"
 
+typedef struct
+{
+    int lin;
+    int col;
+    char** grille;
+
+}GRID;
+
+
 /**
  * @brief Function for the user to choose what to do when openning the game with entry check.
  * 
@@ -10,7 +19,12 @@
  */
 int startGame();
 
-
+/**
+ * @brief Create a And Initialize Grid object
+ * 
+ * @return GRID 
+ */
+GRID* createAndInitializeGrid();
 
 /**
  * @brief Functions that clears the command prompt supporting both Windows and Linux OS.
