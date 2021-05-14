@@ -4,13 +4,13 @@ int startGame()
 {
     clear();
     int startChoice;
-    printf(GRN "Bievenue dans le jeu du Puissance N" RESET "\n1. Nouvelle partie\n2. Continuer la dernière partie\n3. Quitter\nQuel est votre choix ? ");
+    printf(GRN "Bievenue dans le jeu du Puissance N" RST "\n1. Nouvelle partie\n2. Continuer la dernière partie\n3. Quitter\nQuel est votre choix ? ");
     startChoice = safeIntInput();
     
     while (startChoice < 1 || startChoice > 3)
     {
         clear();
-        printf(RED "Entrée incorrecte, veuillez recommencer" RESET "\n1. Nouvelle partie\n2. Continuer la dernière partie\n3. Quitter\nQuel est votre choix ? ");
+        printf(RED "Entrée incorrecte, veuillez recommencer" RST "\n1. Nouvelle partie\n2. Continuer la dernière partie\n3. Quitter\nQuel est votre choix ? ");
         //scanf("%d", &startChoice);
         startChoice = safeIntInput();
     }
@@ -18,12 +18,13 @@ int startGame()
 }
 
 GRID* createAndInitializeGrid(){
-    GRID* newGrid;
+    GRID* newGrid = NULL;
+    newGrid = malloc(sizeof(GRID));
     int input = 0;
     printf("Quelle est le nombre de colones du jeu ? ");
     input = safeIntInput();
     while(input < 1){
-        printf(RED "Le nombre entré n'est pas correct\n" RESET "Quel est le nombre de colones du jeu ? ");
+        printf(RED "Le nombre entré n'est pas correct\n" RST "Quel est le nombre de colones du jeu ? ");
         input = safeIntInput();
     }
     newGrid->col = input;
@@ -31,14 +32,23 @@ GRID* createAndInitializeGrid(){
     printf("Quelle est le nombre de lignes du jeu ? ");
     input = safeIntInput();
     while(input < 1){
-        printf(RED "Le nombre entré n'est pas correct\n" RESET "Quel est le nombre de lignes du jeu ? ");
+        printf(RED "Le nombre entré n'est pas correct\n" RST "Quel est le nombre de lignes du jeu ? ");
         input = safeIntInput();
     }
     newGrid->lin = input;
 
+
+
     return newGrid;
 }
 
+GRID* initializeGrid(GRID* newGrid){
+    for(int i = 0; i < (newGrid->col); i++){
+        for(int j = 0; j < (newGrid->lin); j++){
+            newGrid->grille[i][j] = 'X';
+        }
+    }
+}
 
 void clear()
 {
