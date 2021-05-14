@@ -13,6 +13,7 @@
 #include <stdlib.h>
 
 /* Text colors */
+#define BLK    "\x1B[30m"
 #define RED    "\x1B[31m"
 #define GRN    "\x1B[32m"
 #define YEL    "\x1B[33m"
@@ -23,6 +24,7 @@
 
 
 /* Background colors */
+#define BBLK   "\x1B[40m"
 #define BRED   "\x1B[41m"
 #define BGRN   "\x1B[42m"
 #define BYEL   "\x1B[43m"
@@ -32,4 +34,4 @@
 #define BWHT   "\x1B[47m"
 
 /* Reset colors */
-#define RESET  "\x1B[0m"
+#define RST  "\x1B[0m"
