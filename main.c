@@ -13,18 +13,20 @@
 
 int main(int argc, char *argv[])
 {
+    GRID* gameBoard = NULL;
     switch (startGame())
     {
     case 1:
-         
-        createAndInitializeGrid();
+        clear();
+        printf(BWHT BLK"Démarrage de la nouvelle partie...\n\n" RST);
+        gameBoard = createAndInitializeGrid();
         
         break;
     case 2:
-        printf(BLU "Loading last saved game\n" RESET);
+        printf(BLU "Loading last saved game\n" RST);
         break;
     case 3:
-        printf(BLU "Bye\n" RESET);
+        printf(BLU "Bye\n" RST);
         return EXIT_SUCCESS;
         break;
     default:
