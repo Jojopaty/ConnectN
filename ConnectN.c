@@ -75,6 +75,10 @@ void printGrid(GRID *grid)
     }
 }
 
+void freeMemory(GRID* grid){
+    
+}
+
 void clear()
 {
 #if defined(_WIN64) || defined(_WIN32)
