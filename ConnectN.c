@@ -45,13 +45,13 @@ GRID *createAndInitializeGrid(GRID *newGrid)
 
 GRID *initializeGrid(GRID *newGrid)
 {
-    newGrid->grille = (char **)malloc(newGrid->col * sizeof(char *));
+    newGrid->grille = (char **)malloc(newGrid->lin * sizeof(char *));
 
-    for (int i = 0; i < (newGrid->col); i++)
+    for (int i = 0; i < (newGrid->lin); i++)
     {
-        newGrid->grille[i] = (char *)malloc(newGrid->lin * sizeof(char));
+        newGrid->grille[i] = (char *)malloc(newGrid->col * sizeof(char));
 
-        for (int j = 0; j < (newGrid->lin); j++)
+        for (int j = 0; j < (newGrid->col); j++)
         {
             newGrid->grille[i][j] = '_';
         }
@@ -63,9 +63,9 @@ GRID *initializeGrid(GRID *newGrid)
 
 void printGrid(GRID *grid)
 {
-    for (int i = 0; i < grid->col; i++)
+    for (int i = 0; i < grid->lin; i++)
     {
-        for (int j = 0; j < grid->lin; j++)
+        for (int j = 0; j < grid->col; j++)
         {
             printf("| %c ", grid->grille[i][j]);
         }
