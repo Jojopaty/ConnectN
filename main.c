@@ -13,16 +13,16 @@
 
 int main(int argc, char *argv[])
 {
-    GRID* gameBoard = NULL;
+    GRID *gameBoard = NULL;
     gameBoard = malloc(sizeof(GRID));
 
     switch (startGame())
     {
     case 1:
         clear();
-        printf(BWHT BLK"Démarrage de la nouvelle partie...\n\n" RST);
+        printf(BWHT BLK "Démarrage de la nouvelle partie...\n\n" RST);
         createAndInitializeGrid(gameBoard);
-        
+
         break;
     case 2:
         printf(BLU "Loading last saved game\n" RST);
@@ -32,11 +32,11 @@ int main(int argc, char *argv[])
         return EXIT_SUCCESS;
         break;
     default:
-    // Should never be executed
+        // Should never be executed
         break;
     }
 
-freeMemory(gameBoard);
+    freeMemory(gameBoard);
 
     return EXIT_SUCCESS;
 }
