@@ -6,7 +6,7 @@ int startGame()
     int startChoice;
     printf(GRN "Bievenue dans le jeu du Puissance N" RST "\n1. Nouvelle partie\n2. Continuer la dernière partie\n3. Quitter\nQuel est votre choix ? ");
     startChoice = safeIntInput();
-    
+
     while (startChoice < 1 || startChoice > 3)
     {
         clear();
@@ -17,13 +17,15 @@ int startGame()
     return startChoice;
 }
 
-GRID* createAndInitializeGrid(){
-    GRID* newGrid = NULL;
+GRID *createAndInitializeGrid()
+{
+    GRID *newGrid = NULL;
     newGrid = malloc(sizeof(GRID));
     int input = 0;
     printf("Quelle est le nombre de colones du jeu ? ");
     input = safeIntInput();
-    while(input < 1){
+    while (input < 1)
+    {
         printf(RED "Le nombre entré n'est pas correct\n" RST "Quel est le nombre de colones du jeu ? ");
         input = safeIntInput();
     }
@@ -31,23 +33,28 @@ GRID* createAndInitializeGrid(){
 
     printf("Quelle est le nombre de lignes du jeu ? ");
     input = safeIntInput();
-    while(input < 1){
+    while (input < 1)
+    {
         printf(RED "Le nombre entré n'est pas correct\n" RST "Quel est le nombre de lignes du jeu ? ");
         input = safeIntInput();
     }
     newGrid->lin = input;
 
-
+    initializeGrid(newGrid);
 
     return newGrid;
 }
 
-GRID* initializeGrid(GRID* newGrid){
-    for(int i = 0; i < (newGrid->col); i++){
-        for(int j = 0; j < (newGrid->lin); j++){
-            newGrid->grille[i][j] = 'X';
+GRID *initializeGrid(GRID *newGrid)
+{
+    for (int i = 0; i < (newGrid->col); i++)
+    {
+        for (int j = 0; j < (newGrid->lin); j++)
+        {
+            newGrid->grille[i][j] = '_';
         }
     }
+    return newGrid;
 }
 
 void clear()

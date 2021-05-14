@@ -27,6 +27,14 @@ int startGame();
 GRID* createAndInitializeGrid();
 
 /**
+ * @brief Initalizing the grid with '_' characters for empty slots.
+ * 
+ * @param newGrid The grid to work with.
+ * @return GRID* An initialized version of the grid
+ */
+GRID *initializeGrid(GRID *newGrid);
+
+/**
  * @brief Functions that clears the command prompt supporting both Windows and Linux OS.
  * 
  */
