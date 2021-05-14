@@ -13,6 +13,10 @@
 
 int main(int argc, char *argv[])
 {
+#if defined(_WIN64) || defined(_WIN32)
+    setlocale(LC_CTYPE, ".1252");
+#endif
+
     GRID *gameBoard = NULL;
     gameBoard = malloc(sizeof(GRID));
 
