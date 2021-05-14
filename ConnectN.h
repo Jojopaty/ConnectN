@@ -7,7 +7,7 @@ typedef struct
 {
     int lin;
     int col;
-    char** grille;
+    char*** grille;
 
 }GRID;
 

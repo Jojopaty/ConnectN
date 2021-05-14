@@ -22,16 +22,16 @@ GRID *createAndInitializeGrid()
     GRID *newGrid = NULL;
     newGrid = malloc(sizeof(GRID));
     int input = 0;
-    printf("Quelle est le nombre de colones du jeu ? ");
+    printf("Quel est le nombre de colonnes du jeu ? ");
     input = safeIntInput();
     while (input < 1)
     {
-        printf(RED "Le nombre entré n'est pas correct\n" RST "Quel est le nombre de colones du jeu ? ");
+        printf(RED "Le nombre entré n'est pas correct\n" RST "Quel est le nombre de colonnes du jeu ? ");
         input = safeIntInput();
     }
     newGrid->col = input;
 
-    printf("Quelle est le nombre de lignes du jeu ? ");
+    printf("Quel est le nombre de lignes du jeu ? ");
     input = safeIntInput();
     while (input < 1)
     {
@@ -47,11 +47,12 @@ GRID *createAndInitializeGrid()
 
 GRID *initializeGrid(GRID *newGrid)
 {
+    newGrid->grille = (char)malloc(sizeof(char **));
     for (int i = 0; i < (newGrid->col); i++)
     {
         for (int j = 0; j < (newGrid->lin); j++)
         {
-            newGrid->grille[i][j] = '_';
+            newGrid->grille[i][j] = "_";
         }
     }
     return newGrid;
