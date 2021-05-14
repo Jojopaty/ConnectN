@@ -14,12 +14,14 @@
 int main(int argc, char *argv[])
 {
     GRID* gameBoard = NULL;
+    gameBoard = malloc(sizeof(GRID));
+
     switch (startGame())
     {
     case 1:
         clear();
         printf(BWHT BLK"Démarrage de la nouvelle partie...\n\n" RST);
-        gameBoard = createAndInitializeGrid();
+        createAndInitializeGrid(gameBoard);
         
         break;
     case 2:
@@ -33,6 +35,8 @@ int main(int argc, char *argv[])
     // Should never be executed
         break;
     }
+
+freeMemory(gameBoard);
 
     return EXIT_SUCCESS;
 }

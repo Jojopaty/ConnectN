@@ -17,10 +17,8 @@ int startGame()
     return startChoice;
 }
 
-GRID *createAndInitializeGrid()
+GRID *createAndInitializeGrid(GRID *newGrid)
 {
-    GRID *newGrid = NULL;
-    newGrid = malloc(sizeof(GRID));
     int input = 0;
     printf("Quel est le nombre de colonnes du jeu ? ");
     input = safeIntInput();
@@ -47,11 +45,11 @@ GRID *createAndInitializeGrid()
 
 GRID *initializeGrid(GRID *newGrid)
 {
-    newGrid->grille = (char**)malloc(newGrid->col * sizeof(char *));
+    newGrid->grille = (char **)malloc(newGrid->col * sizeof(char *));
 
     for (int i = 0; i < (newGrid->col); i++)
     {
-        newGrid->grille[i] = (char*)malloc(newGrid->lin * sizeof(char));
+        newGrid->grille[i] = (char *)malloc(newGrid->lin * sizeof(char));
 
         for (int j = 0; j < (newGrid->lin); j++)
         {
@@ -75,8 +73,13 @@ void printGrid(GRID *grid)
     }
 }
 
-void freeMemory(GRID* grid){
-    
+void freeMemory(GRID *grid)
+{
+    for (int i = 0; i < grid->col; i++)
+    {
+        free(grid->grille[i]);
+    }
+    free(grid);
 }
 
 void clear()
