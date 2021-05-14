@@ -3,11 +3,6 @@
 #include <string.h>
 #include "colors.h"
 
-#if defined(_WIN64) || defined(_WIN32)
-#include <locale.h>
-#endif
-
-
 typedef struct
 {
     int lin;
