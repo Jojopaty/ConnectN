@@ -7,7 +7,7 @@ typedef struct
 {
     int lin;
     int col;
-    char*** grille;
+    char** grille;
 
 }GRID;
 
@@ -33,6 +33,13 @@ GRID* createAndInitializeGrid();
  * @return GRID* An initialized version of the grid
  */
 GRID *initializeGrid(GRID *newGrid);
+
+/**
+ * @brief Function for printing the grid of characters.
+ * 
+ * @param grid The grid to print.
+ */
+void printGrid(GRID *grid);
 
 /**
  * @brief Functions that clears the command prompt supporting both Windows and Linux OS.

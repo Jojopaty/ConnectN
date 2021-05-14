@@ -47,15 +47,32 @@ GRID *createAndInitializeGrid()
 
 GRID *initializeGrid(GRID *newGrid)
 {
-    newGrid->grille = (char)malloc(sizeof(char **));
+    newGrid->grille = (char**)malloc(newGrid->col * sizeof(char *));
+
     for (int i = 0; i < (newGrid->col); i++)
     {
+        newGrid->grille[i] = (char*)malloc(newGrid->lin * sizeof(char));
+
         for (int j = 0; j < (newGrid->lin); j++)
         {
-            newGrid->grille[i][j] = "_";
+            newGrid->grille[i][j] = '_';
         }
     }
+    printGrid(newGrid);
+
     return newGrid;
+}
+
+void printGrid(GRID *grid)
+{
+    for (int i = 0; i < grid->col; i++)
+    {
+        for (int j = 0; j < grid->lin; j++)
+        {
+            printf("| %c ", grid->grille[i][j]);
+        }
+        printf("|\n");
+    }
 }
 
 void clear()
