@@ -79,6 +79,7 @@ void freeMemory(GRID *grid)
     {
         free(grid->grille[i]);
     }
+    free(grid->grille);
     free(grid);
 }
 
