@@ -56,12 +56,12 @@ GRID *initializeGrid(GRID *newGrid)
             newGrid->grille[i][j] = '_';
         }
     }
-    printGrid(newGrid);
+    showGrid(newGrid);
 
     return newGrid;
 }
 
-void printGrid(GRID *grid)
+void showGrid(GRID *grid)
 {
     for (int i = 0; i < grid->lin; i++)
     {

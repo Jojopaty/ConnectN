@@ -38,7 +38,7 @@ GRID *initializeGrid(GRID *newGrid);
  * 
  * @param grid The grid to print.
  */
-void printGrid(GRID *grid);
+void showGrid(GRID *grid);
 
 /**
  * @brief 
