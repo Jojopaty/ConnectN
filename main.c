@@ -15,6 +15,8 @@ int main(int argc, char *argv[])
 {
     GRID *gameBoard = NULL;
     gameBoard = malloc(sizeof(GRID));
+    int column;
+
 
     switch (startGame())
     {
@@ -22,7 +24,10 @@ int main(int argc, char *argv[])
         clear();
         printf(BWHT BLK "Démarrage de la nouvelle partie...\n\n" RST);
         createAndInitializeGrid(gameBoard);
-
+        // puts("Quelle colonne ?");
+        // scanf("%d", &column);
+        // addToken(gameBoard, column, 79);
+        // showGrid(gameBoard);
         break;
     case 2:
         printf(BLU "Loading last saved game\n" RST);

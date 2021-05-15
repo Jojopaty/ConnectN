@@ -45,11 +45,11 @@ GRID *createAndInitializeGrid(GRID *newGrid)
 
 GRID *initializeGrid(GRID *newGrid)
 {
-    newGrid->grille = (char **)malloc(newGrid->lin * sizeof(char *));
+    newGrid->grille = (char **)malloc(newGrid->col * sizeof(char *));
 
     for (int i = 0; i < (newGrid->lin); i++)
     {
-        newGrid->grille[i] = (char *)malloc(newGrid->col * sizeof(char));
+        newGrid->grille[i] = (char *)malloc(newGrid->lin * sizeof(char));
 
         for (int j = 0; j < (newGrid->col); j++)
         {
@@ -81,6 +81,40 @@ void freeMemory(GRID *grid)
     }
     free(grid->grille);
     free(grid);
+}
+
+int addToken(GRID *grid, int column, char token)
+{
+    int line = (grid->lin) - 1;
+
+    if (column > (grid->col))
+    {
+        printf(RED "La colonne %d n'existe pas, impossible d'ajouter le jeton.\n" RST, column);
+        return 0;
+    }
+    else if (token != 'X' || token != 'O')
+    {
+        printf(RED "Type de jeton %c non reconnu.\n" RST, token);
+        return 0;
+    }
+    else
+    {
+        while (line >= 0 || grid->grille[line][column] == '_')
+        {
+            line--;
+        }
+
+        if (line < 0)
+        {
+            printf(RED "La colonne %d est pleine, le jeton n'a pas pu être ajouté.\n" RST, column);
+            return 0;
+        }
+        else
+        {
+            grid->grille[line][column] = token;
+            return 1;
+        }
+    }
 }
 
 void clear()

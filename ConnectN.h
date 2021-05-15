@@ -48,6 +48,16 @@ void showGrid(GRID *grid);
 void freeMemory(GRID *grid);
 
 /**
+ * @brief Function for adding a token to the initialized grid
+ * 
+ * @param grid The grid to add the token to.
+ * @param col The column to add the token to if possible
+ * @param token The type of token to add (O for yellow and X for red)
+ * @return int Either 1 if adding succedded or 0 if not.
+ */
+int addToken(GRID* grid, int column, char token);
+
+/**
  * @brief Functions that clears the command prompt supporting both Windows and Linux OS.
  * 
  */
