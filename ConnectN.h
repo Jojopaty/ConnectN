@@ -7,9 +7,9 @@ typedef struct
 {
     int lin;
     int col;
-    char** grille;
+    char **grille;
 
-}GRID;
+} GRID;
 
 /**
  * @brief Function for the user to choose what to do when openning the game with entry check.
@@ -23,7 +23,7 @@ int startGame();
  * 
  * @return GRID 
  */
-GRID *createAndInitializeGrid(GRID* newGrid);
+GRID *createAndInitializeGrid(GRID *newGrid);
 
 /**
  * @brief Initalizing the grid with '_' characters for empty slots.
@@ -55,7 +55,7 @@ void freeMemory(GRID *grid);
  * @param token The type of token to add (O for yellow and X for red)
  * @return int Either 1 if adding succedded or 0 if not.
  */
-int addToken(GRID* grid, int column, char token);
+int addToken(GRID *grid, int player);
 
 /**
  * @brief Functions that clears the command prompt supporting both Windows and Linux OS.

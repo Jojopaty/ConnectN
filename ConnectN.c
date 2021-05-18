@@ -20,23 +20,15 @@ int startGame()
 GRID *createAndInitializeGrid(GRID *newGrid)
 {
     int input = 0;
-    printf("Quel est le nombre de colonnes du jeu ? ");
+    printf("Combien de jetons doivent être alignés pour gagner ? ");
     input = safeIntInput();
-    while (input < 1)
-    {
-        printf(RED "Le nombre entré n'est pas correct\n" RST "Quel est le nombre de colonnes du jeu ? ");
-        input = safeIntInput();
-    }
-    newGrid->col = input;
 
-    printf("Quel est le nombre de lignes du jeu ? ");
-    input = safeIntInput();
     while (input < 1)
     {
-        printf(RED "Le nombre entré n'est pas correct\n" RST "Quel est le nombre de lignes du jeu ? ");
+        printf(RED "Le nombre entré n'est pas correct\n" RST "Combien de jetons doivent être alignés pour gagner ? ");
         input = safeIntInput();
     }
-    newGrid->lin = input;
+    newGrid->col = newGrid->lin = input + 2;
 
     initializeGrid(newGrid);
 
@@ -45,11 +37,11 @@ GRID *createAndInitializeGrid(GRID *newGrid)
 
 GRID *initializeGrid(GRID *newGrid)
 {
-    newGrid->grille = (char **)malloc(newGrid->col * sizeof(char *));
+    newGrid->grille = (char **)malloc(newGrid->lin * sizeof(char *));
 
     for (int i = 0; i < (newGrid->lin); i++)
     {
-        newGrid->grille[i] = (char *)malloc(newGrid->lin * sizeof(char));
+        newGrid->grille[i] = (char *)malloc(newGrid->col * sizeof(char));
 
         for (int j = 0; j < (newGrid->col); j++)
         {
@@ -83,35 +75,41 @@ void freeMemory(GRID *grid)
     free(grid);
 }
 
-int addToken(GRID *grid, int column, char token)
+int addToken(GRID *grid, int player)
 {
-    int line = (grid->lin) - 1;
+    int column = safeIntInput();
 
-    if (column > (grid->col))
+    char token = (player == 1) ? 'O' : 'X';
+
+    int line = grid->lin;
+    printf("%d\n", line);
+
+    if (column > (grid->col) || column < 1)
     {
         printf(RED "La colonne %d n'existe pas, impossible d'ajouter le jeton.\n" RST, column);
         return 0;
     }
-    else if (token != 'X' || token != 'O')
-    {
-        printf(RED "Type de jeton %c non reconnu.\n" RST, token);
-        return 0;
-    }
+    // else if (token != 'X' || token != 'O')
+    // {
+    //     printf(RED "Type de jeton %c non reconnu.\n" RST, token);
+    //     return 0;
+    // }
     else
     {
-        while (line >= 0 || grid->grille[line][column] == '_')
+        while (line > 0 && (grid->grille[line - 1][column - 1] == 'X' || grid->grille[line - 1][column - 1] == 'O'))
         {
             line--;
+            printf("%d\n", line);
         }
 
-        if (line < 0)
+        if (line <= 0)
         {
             printf(RED "La colonne %d est pleine, le jeton n'a pas pu être ajouté.\n" RST, column);
             return 0;
         }
         else
         {
-            grid->grille[line][column] = token;
+            grid->grille[line - 1][column - 1] = token;
             return 1;
         }
     }
