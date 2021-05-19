@@ -115,6 +115,23 @@ int addToken(GRID *grid, int player)
     }
 }
 
+void saveToFile(GRID *grid)
+{
+    FILE *file = fopen("file.bin", "w");
+    char array[(grid->lin - 1)];
+    char size[16];
+    sprintf(size, "%d \n", grid->col);
+    fputs(size, file);
+    for (int i = 0; i < grid->lin; i++)
+    {
+        strcpy(array, grid->grille[i]);
+
+        fputs(array, file);
+        fputs("\n", file);
+    }
+    fclose(file);
+}
+
 void clear()
 {
 #if defined(_WIN64) || defined(_WIN32)

@@ -31,6 +31,7 @@ int main(int argc, char *argv[])
             showGrid(gameBoard);
             player = (player == 1) ? 2 : 1;
         }
+        saveToFile(gameBoard);
         break;
     case 2:
         printf(BLU "Loading last saved game\n" RST);

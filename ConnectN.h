@@ -57,6 +57,8 @@ void freeMemory(GRID *grid);
  */
 int addToken(GRID *grid, int player);
 
+void saveToFile(GRID *grid);
+
 /**
  * @brief Functions that clears the command prompt supporting both Windows and Linux OS.
  * 
