@@ -25,9 +25,14 @@ int main(int argc, char *argv[])
         createAndInitializeGrid(gameBoard);
         for (int i = 0; i < 4; i++)
         {
+            printf("Joueur %d\n", player);
             printf("Quelle colonne ? ");
-            addToken(gameBoard, player);
-            // clear();
+            int hasAdded = 0;
+            do
+            {
+                hasAdded = addToken(gameBoard, player);
+            } while (hasAdded != 1);
+
             showGrid(gameBoard);
             player = (player == 1) ? 2 : 1;
         }

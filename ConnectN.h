@@ -57,6 +57,11 @@ void freeMemory(GRID *grid);
  */
 int addToken(GRID *grid, int player);
 
+/**
+ * @brief Function saving the current grid to a .bin file
+ * 
+ * @param grid The grid to save
+ */
 void saveToFile(GRID *grid);
 
 /**
