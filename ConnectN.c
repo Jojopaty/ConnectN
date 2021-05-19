@@ -11,13 +11,12 @@ int startGame()
     {
         clear();
         printf(RED "Entrée incorrecte, veuillez recommencer" RST "\n1. Nouvelle partie\n2. Continuer la dernière partie\n3. Quitter\nQuel est votre choix ? ");
-        //scanf("%d", &startChoice);
         startChoice = safeIntInput();
     }
     return startChoice;
 }
 
-GRID *createAndInitializeGrid(GRID *newGrid)
+GRID *createAndInitializeGrid(GRID *newGrid, int *align)
 {
     int input = 0;
     printf("Combien de jetons doivent être alignés pour gagner ? ");
@@ -28,8 +27,9 @@ GRID *createAndInitializeGrid(GRID *newGrid)
         printf(RED "Le nombre entré n'est pas correct\n" RST "Combien de jetons doivent être alignés pour gagner ? ");
         input = safeIntInput();
     }
+    *align = input;
     newGrid->col = newGrid->lin = input + 2;
-
+    clear();
     initializeGrid(newGrid);
 
     return newGrid;
@@ -65,51 +65,73 @@ void showGrid(GRID *grid)
     }
 }
 
-void freeMemory(GRID *grid)
+void freeMemory(GRID *grid, int *num)
 {
     for (int i = 0; i < grid->col; i++)
     {
         free(grid->grille[i]);
+        grid->grille[i] = NULL;
     }
+
     free(grid->grille);
+    grid->grille = NULL;
     free(grid);
+    grid = NULL;
+
+    free(num);
+    num = NULL;
 }
 
-int addToken(GRID *grid, int player)
+int moveChoice(int round)
 {
-    int column = safeIntInput();
-
-    char token = (player == 1) ? 'O' : 'X';
-
-    int line = grid->lin;
-    printf("%d\n", line);
-
-    if (column > (grid->col) || column < 1)
+    if (round > 0)
     {
-        printf(RED "La colonne %d n'existe pas, impossible d'ajouter le jeton.\n" RST, column);
-        return 0;
+        printf(GRN "\nQue souhaitez-vous faire ?" RST "\n1. Ajouter un jeton\n2. Retirer un jeton\nQuel est votre choix ? ");
+        int choice = safeIntInput();
+
+        while (choice < 1 || choice > 2)
+        {
+            printf(RED "\nEntrée incorrecte, veuillez recommencer" RST "\n1. Ajouter un jeton\n2. Retirer un jeton\nQuel est votre choix ? ");
+            choice = safeIntInput();
+        }
+        return choice;
     }
-    // else if (token != 'X' || token != 'O')
-    // {
-    //     printf(RED "Type de jeton %c non reconnu.\n" RST, token);
-    //     return 0;
-    // }
     else
     {
-        while (line > 0 && (grid->grille[line - 1][column - 1] == 'X' || grid->grille[line - 1][column - 1] == 'O'))
+        return 1; // First game round -> no token to remove -> function addToken called;
+    }
+}
+
+int addToken(GRID *grid, int col, char token)
+{
+    int line = grid->lin;
+
+    if (col > (grid->col) || col < 1)
+    {
+        printf(RED "La colonne %d n'existe pas, impossible d'ajouter le jeton.\n" RST, col);
+        return 0;
+    }
+    else if (token != 'X' && token != 'O')
+    {
+        printf(RED "Type de jeton %c non reconnu.\n" RST, token);
+        return 0;
+    }
+    else
+    {
+
+        while (line > 0 && grid->grille[line - 1][col - 1] != '_')
         {
             line--;
-            printf("%d\n", line);
         }
 
         if (line <= 0)
         {
-            printf(RED "La colonne %d est pleine, le jeton n'a pas pu être ajouté.\n" RST, column);
+            printf(RED "La colonne %d est pleine, le jeton n'a pas pu être ajouté.\n" RST, col);
             return 0;
         }
         else
         {
-            grid->grille[line - 1][column - 1] = token;
+            grid->grille[line - 1][col - 1] = token;
             return 1;
         }
     }

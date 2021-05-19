@@ -1,7 +1,8 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
-#include "colors.h"
+#include <time.h>
+#include <colors.h>
 
 typedef struct
 {
@@ -21,9 +22,11 @@ int startGame();
 /**
  * @brief Create a And Initialize Grid object
  * 
- * @return GRID 
+ * @param newGrid 
+ * @param align 
+ * @return GRID* 
  */
-GRID *createAndInitializeGrid(GRID *newGrid);
+GRID *createAndInitializeGrid(GRID *newGrid, int* align);
 
 /**
  * @brief Initalizing the grid with '_' characters for empty slots.
@@ -44,8 +47,17 @@ void showGrid(GRID *grid);
  * @brief 
  * 
  * @param grid 
+ * @param num 
  */
-void freeMemory(GRID *grid);
+void freeMemory(GRID *grid, int *num);
+
+/**
+ * @brief 
+ * 
+ * @param round 
+ * @return int 
+ */
+int moveChoice(int round);
 
 /**
  * @brief Function for adding a token to the initialized grid
@@ -55,7 +67,9 @@ void freeMemory(GRID *grid);
  * @param token The type of token to add (O for yellow and X for red)
  * @return int Either 1 if adding succedded or 0 if not.
  */
-int addToken(GRID *grid, int player);
+int addToken(GRID *grid, int col, char token);
+
+// int re
 
 /**
  * @brief Function saving the current grid to a .bin file
