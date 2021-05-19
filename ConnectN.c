@@ -120,7 +120,7 @@ void saveToFile(GRID *grid)
     FILE *file = fopen("file.bin", "w");
     char array[(grid->lin - 1)];
     char size[16];
-    sprintf(size, "%d \n", grid->col);
+    sprintf(size, "%d\n", grid->col);
     fputs(size, file);
     for (int i = 0; i < grid->lin; i++)
     {
