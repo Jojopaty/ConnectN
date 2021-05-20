@@ -9,8 +9,14 @@ typedef struct
     int lin;
     int col;
     char **grille;
+} gridClass;
 
-} GRID;
+typedef struct
+{
+    int posLin;
+    int posCol;
+    char type;
+} tokenClass;
 
 /**
  * @brief Function for the user to choose what to do when openning the game with entry check.
@@ -26,7 +32,7 @@ int startGame();
  * @param align 
  * @return GRID* 
  */
-GRID *createAndInitializeGrid(GRID *newGrid, int *align);
+gridClass *createAndInitializeGrid(gridClass *newGrid, int *align);
 
 /**
  * @brief Initalizing the grid with '_' characters for empty slots.
@@ -34,14 +40,14 @@ GRID *createAndInitializeGrid(GRID *newGrid, int *align);
  * @param newGrid The grid to work with.
  * @return GRID* An initialized version of the grid
  */
-GRID *initializeGrid(GRID *newGrid);
+gridClass *initializeGrid(gridClass *newGrid);
 
 /**
  * @brief Function for printing the grid of characters.
  * 
  * @param grid The grid to print.
  */
-void showGrid(GRID *grid);
+void showGrid(gridClass *grid);
 
 /**
  * @brief 
@@ -49,7 +55,7 @@ void showGrid(GRID *grid);
  * @param grid 
  * @param num 
  */
-void freeMemory(GRID *grid, int *num);
+void freeMemory(gridClass *grid, int *num);
 
 /**
  * @brief 
@@ -67,7 +73,7 @@ int moveChoice(int round);
  * @param token The type of token to add (O for yellow and X for red)
  * @return int Either 1 if adding succedded or 0 if not.
  */
-int addToken(GRID *grid, int col, char token);
+int addToken(gridClass *grid, int col, char token);
 
 /**
  * @brief 
@@ -76,7 +82,7 @@ int addToken(GRID *grid, int col, char token);
  * @param col 
  * @return int 
  */
-int removeToken(GRID *grid, int col);
+int removeToken(gridClass *grid, int col);
 
 /**
  * @brief 
@@ -84,14 +90,18 @@ int removeToken(GRID *grid, int col);
  * @param grid 
  * @return int 
  */
-int checkWinner(GRID *grid, int *N, char token);
+int checkWinner(gridClass *grid, int *N, tokenClass *token);
+
+int checkVert(gridClass *grid, int N, tokenClass *token);
+
+int checkHoriz(gridClass *grid, int N, tokenClass *token);
 
 /**
  * @brief Function saving the current grid to a .bin file
  * 
  * @param grid The grid to save
  */
-void saveToFile(GRID *grid);
+void saveToFile(gridClass *grid);
 
 /**
  * @brief Functions that clears the command prompt supporting both Windows and Linux OS.

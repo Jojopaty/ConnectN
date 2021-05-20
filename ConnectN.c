@@ -16,7 +16,7 @@ int startGame()
     return startChoice;
 }
 
-GRID *createAndInitializeGrid(GRID *newGrid, int *align)
+gridClass *createAndInitializeGrid(gridClass *newGrid, int *align)
 {
     int input = 0;
     printf("Combien de jetons doivent être alignés pour gagner ? ");
@@ -35,7 +35,7 @@ GRID *createAndInitializeGrid(GRID *newGrid, int *align)
     return newGrid;
 }
 
-GRID *initializeGrid(GRID *newGrid)
+gridClass *initializeGrid(gridClass *newGrid)
 {
     newGrid->grille = (char **)malloc(newGrid->lin * sizeof(char *));
 
@@ -53,7 +53,7 @@ GRID *initializeGrid(GRID *newGrid)
     return newGrid;
 }
 
-void showGrid(GRID *grid)
+void showGrid(gridClass *grid)
 {
     for (int i = 0; i < grid->lin; i++)
     {
@@ -65,7 +65,7 @@ void showGrid(GRID *grid)
     }
 }
 
-void freeMemory(GRID *grid, int *num)
+void freeMemory(gridClass *grid, int *num)
 {
     for (int i = 0; i < grid->col; i++)
     {
@@ -86,12 +86,12 @@ int moveChoice(int round)
 {
     if (round > 0)
     {
-        printf(GRN "\nQue souhaitez-vous faire ?" RST "\n1. Ajouter un jeton\n2. Retirer un jeton\nQuel est votre choix ? ");
+        printf(GRN "\nQue souhaitez-vous faire ?" RST "\n1. Ajouter un jeton\n2. Retirer un jeton\n3. Sauvegarder et quitter\nQuel est votre choix ? ");
         int choice = safeIntInput();
 
-        while (choice < 1 || choice > 2)
+        while (choice < 1 || choice > 3)
         {
-            printf(RED "\nEntrée incorrecte, veuillez recommencer" RST "\n1. Ajouter un jeton\n2. Retirer un jeton\nQuel est votre choix ? ");
+            printf(RED "\nEntrée incorrecte, veuillez recommencer" RST "\n1. Ajouter un jeton\n2. Retirer un jeton\n3. Sauvegarder et quitter\nQuel est votre choix ? ");
             choice = safeIntInput();
         }
         return choice;
@@ -102,7 +102,7 @@ int moveChoice(int round)
     }
 }
 
-int addToken(GRID *grid, int col, char token)
+int addToken(gridClass *grid, int col, char token)
 {
     int line = grid->lin;
 
@@ -137,7 +137,7 @@ int addToken(GRID *grid, int col, char token)
     }
 }
 
-int removeToken(GRID *grid, int col)
+int removeToken(gridClass *grid, int col)
 {
     int line = 0;
 
@@ -165,23 +165,60 @@ int removeToken(GRID *grid, int col)
     }
 }
 
-int checkWinner(GRID *grid, int *N, char token)
+int checkWinner(gridClass *grid, int *N, tokenClass *token)
 {
-
-    return checkVert(grid, N, token);
+    return checkVert(grid, *N, token) + checkHoriz(grid, *N, token);
 }
-int checkVert(GRID *grid, int N, char token)
+
+int checkVert(gridClass *grid, int N, tokenClass *token)
+{
+    int aligned = 0;
+    for (int i = 0; i < grid->lin; i++)
+    {
+        if ((grid->grille[i][(token->posCol)]) == (token->type))
+        {
+            aligned++;
+        }
+        else
+        {
+            aligned = 0;
+        }
+    }
+    if (aligned == N)
+    {
+        return 1;
+    }
+    else
+    {
+        return 0;
+    }
+}
+
+int checkHoriz(gridClass *grid, int N, tokenClass *token)
 {
     int aligned = 0;
     for (int i = 0; i < grid->col; i++)
     {
-        for (int j = 0; j < grid->lin; j++)
+        if ((grid->grille[(token->posLin)][i]) == (token->type))
         {
+            aligned++;
         }
+        else
+        {
+            aligned = 0;
+        }
+    }
+    if (aligned == N)
+    {
+        return 1;
+    }
+    else
+    {
+        return 0;
     }
 }
 
-void saveToFile(GRID *grid)
+void saveToFile(gridClass *grid)
 {
     FILE *file = fopen("file.bin", "w");
     char array[(grid->lin - 1)];

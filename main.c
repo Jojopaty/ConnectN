@@ -15,13 +15,14 @@ int main(int argc, char *argv[])
 {
     srand(time(NULL));
 
-    GRID *gameBoard = malloc(sizeof(GRID));
+    gridClass *gameBoard = malloc(sizeof(gridClass));
+    tokenClass *token = malloc(sizeof(tokenClass));
     int player;
     int column;
     int shot = 0;
     int hasPlayed = 0;
     int hasWon = 0;
-    int quit = 1;
+    int quit = 0;
     int *toAlign = malloc(sizeof(int)); // pointer on int
 
     switch (startGame())
@@ -31,10 +32,10 @@ int main(int argc, char *argv[])
         printf(BWHT BLK "Démarrage de la nouvelle partie...\n" RST);
         createAndInitializeGrid(gameBoard, toAlign);
         player = rand() % 2 + 1;
-        for (int i = 0; i < 4; i++)
+        while(hasWon < 1)
         {
             printf("\nJoueur %d\n", player);
-            char token = ((player == 1) ? 'O' : 'X');
+            token->type = ((player == 1) ? 'O' : 'X');
             hasPlayed = 0;
             do
             {
@@ -44,7 +45,7 @@ int main(int argc, char *argv[])
 
                     printf("\nAjouter un jeton dans quelle colonne ? ");
                     column = safeIntInput();
-                    hasPlayed = addToken(gameBoard, column, token);
+                    hasPlayed = addToken(gameBoard, column, token->type);
 
                     break;
                 case 2:
@@ -56,6 +57,7 @@ int main(int argc, char *argv[])
                     break;
                 case 3:
                     quit = 1;
+                    saveToFile(gameBoard); //TODO Add next player in saved file
                     break;
                 default:
                     break;
@@ -75,7 +77,7 @@ int main(int argc, char *argv[])
                 printf("La partie a été enregistrée, pour la continuer, sélectionnez 'Continuer la dernière partie' au prochain démarrage du jeu.\nA bientôt !");
             }
         }
-        saveToFile(gameBoard);
+        
         break;
     case 2:
         printf(BLU "Loading last saved game\n" RST);
