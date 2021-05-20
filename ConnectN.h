@@ -73,7 +73,7 @@ int moveChoice(int round);
  * @param token The type of token to add (O for yellow and X for red)
  * @return int Either 1 if adding succedded or 0 if not.
  */
-int addToken(gridClass *grid, int col, char token);
+int addToken(gridClass *grid, int col, tokenClass *token);
 
 /**
  * @brief 

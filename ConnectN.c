@@ -102,7 +102,7 @@ int moveChoice(int round)
     }
 }
 
-int addToken(gridClass *grid, int col, char token)
+int addToken(gridClass *grid, int col, tokenClass *token)
 {
     int line = grid->lin;
 
@@ -111,9 +111,9 @@ int addToken(gridClass *grid, int col, char token)
         printf(RED "La colonne %d n'existe pas, impossible d'ajouter le jeton.\n" RST, col);
         return 0;
     }
-    else if (token != 'X' && token != 'O')
+    else if ((token->type) != 'X' && (token->type) != 'O')
     {
-        printf(RED "Type de jeton %c non reconnu.\n" RST, token);
+        printf(RED "Type de jeton %c non reconnu.\n" RST, (token->type));
         return 0;
     }
     else
@@ -131,7 +131,9 @@ int addToken(gridClass *grid, int col, char token)
         }
         else
         {
-            grid->grille[line - 1][col - 1] = token;
+            grid->grille[line - 1][col - 1] = (token->type);
+            token->posLin = line - 1;
+            token->posCol = col - 1;
             return 1;
         }
     }
@@ -194,7 +196,7 @@ int checkVert(gridClass *grid, int N, tokenClass *token)
     }
 }
 
-int checkHoriz(gridClass *grid, int N, tokenClass *token)
+int checkHoriz(gridClass *grid, int N, tokenClass *token) //TODO Check this function to see where the bug is
 {
     int aligned = 0;
     for (int i = 0; i < grid->col; i++)

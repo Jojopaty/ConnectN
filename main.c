@@ -23,6 +23,7 @@ int main(int argc, char *argv[])
     int hasPlayed = 0;
     int hasWon = 0;
     int quit = 0;
+    int removedColumn = 0;
     int *toAlign = malloc(sizeof(int)); // pointer on int
 
     switch (startGame())
@@ -32,7 +33,7 @@ int main(int argc, char *argv[])
         printf(BWHT BLK "Démarrage de la nouvelle partie...\n" RST);
         createAndInitializeGrid(gameBoard, toAlign);
         player = rand() % 2 + 1;
-        while(hasWon < 1)
+        while (hasWon < 1 && quit < 1)
         {
             printf("\nJoueur %d\n", player);
             token->type = ((player == 1) ? 'O' : 'X');
@@ -45,24 +46,32 @@ int main(int argc, char *argv[])
 
                     printf("\nAjouter un jeton dans quelle colonne ? ");
                     column = safeIntInput();
-                    hasPlayed = addToken(gameBoard, column, token->type);
-
+                    if (column != removedColumn)
+                    {
+                        hasPlayed = addToken(gameBoard, column, token);
+                        removedColumn = 0;
+                    }
+                    else
+                    {
+                        hasPlayed = 0;
+                        printf(RED "Vous ne pouvez pas insérer de jeton dans cette colonne. Un jeton vient d'y être retiré." RST);
+                    }
                     break;
                 case 2:
 
                     printf("\nRetirer un jeton dans quelle colonne ? ");
                     column = safeIntInput();
                     hasPlayed = removeToken(gameBoard, column);
-
+                    removedColumn = column;
                     break;
                 case 3:
-                    quit = 1;
                     saveToFile(gameBoard); //TODO Add next player in saved file
+                    quit = 1;
                     break;
                 default:
                     break;
                 }
-            } while (hasPlayed != 1 && quit < 1);
+            } while (quit != 1 && hasPlayed != 1);
 
             if (quit < 1)
             {
@@ -74,10 +83,10 @@ int main(int argc, char *argv[])
             }
             else
             {
-                printf("La partie a été enregistrée, pour la continuer, sélectionnez 'Continuer la dernière partie' au prochain démarrage du jeu.\nA bientôt !");
+                printf(GRN"\nLa partie a été enregistrée, pour la continuer, sélectionnez 'Continuer la dernière partie' au prochain démarrage du jeu.\n"CYN"A bientôt !\n"RST);
             }
         }
-        
+
         break;
     case 2:
         printf(BLU "Loading last saved game\n" RST);
