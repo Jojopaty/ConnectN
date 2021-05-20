@@ -148,21 +148,37 @@ int removeToken(GRID *grid, int col)
     }
     else
     {
-        while (line < grid->lin && grid->grille[line][col-1] == '_'){
+        while (line < grid->lin && grid->grille[line][col - 1] == '_')
+        {
             line++;
         }
-        if (line >= grid->lin){
+        if (line >= grid->lin)
+        {
             printf(RED "La colonne %d est vide, aucun jeton n'a pu y être retiré.\n" RST, col);
             return 0;
-        } else{
-            grid->grille[line][col-1] = '_';
+        }
+        else
+        {
+            grid->grille[line][col - 1] = '_';
             return 1;
         }
     }
 }
 
-int checkWinner(GRID* grid, int N){
+int checkWinner(GRID *grid, int *N, char token)
+{
 
+    return checkVert(grid, N, token);
+}
+int checkVert(GRID *grid, int N, char token)
+{
+    int aligned = 0;
+    for (int i = 0; i < grid->col; i++)
+    {
+        for (int j = 0; j < grid->lin; j++)
+        {
+        }
+    }
 }
 
 void saveToFile(GRID *grid)

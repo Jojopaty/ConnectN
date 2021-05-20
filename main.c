@@ -34,7 +34,7 @@ int main(int argc, char *argv[])
         for (int i = 0; i < 4; i++)
         {
             printf("\nJoueur %d\n", player);
-
+            char token = ((player == 1) ? 'O' : 'X');
             hasPlayed = 0;
             do
             {
@@ -44,7 +44,7 @@ int main(int argc, char *argv[])
 
                     printf("\nAjouter un jeton dans quelle colonne ? ");
                     column = safeIntInput();
-                    hasPlayed = addToken(gameBoard, column, ((player == 1) ? 'O' : 'X'));
+                    hasPlayed = addToken(gameBoard, column, token);
 
                     break;
                 case 2:
@@ -68,7 +68,7 @@ int main(int argc, char *argv[])
                 showGrid(gameBoard);
                 player = (player == 1) ? 2 : 1;
                 shot++;
-                hasWon = checkWinner(gameBoard, *toAlign);
+                hasWon = checkWinner(gameBoard, toAlign, token);
             }
             else
             {

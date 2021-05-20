@@ -26,7 +26,7 @@ int startGame();
  * @param align 
  * @return GRID* 
  */
-GRID *createAndInitializeGrid(GRID *newGrid, int* align);
+GRID *createAndInitializeGrid(GRID *newGrid, int *align);
 
 /**
  * @brief Initalizing the grid with '_' characters for empty slots.
@@ -84,7 +84,7 @@ int removeToken(GRID *grid, int col);
  * @param grid 
  * @return int 
  */
-int checkWinner(GRID* grid, int N);
+int checkWinner(GRID *grid, int *N, char token);
 
 /**
  * @brief Function saving the current grid to a .bin file
