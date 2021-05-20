@@ -137,6 +137,34 @@ int addToken(GRID *grid, int col, char token)
     }
 }
 
+int removeToken(GRID *grid, int col)
+{
+    int line = 0;
+
+    if (col > grid->col || col < 1)
+    {
+        printf(RED "La colonne %d n'existe pas, impossible d'y retirer un jeton.\n" RST, col);
+        return 0;
+    }
+    else
+    {
+        while (line < grid->lin && grid->grille[line][col-1] == '_'){
+            line++;
+        }
+        if (line >= grid->lin){
+            printf(RED "La colonne %d est vide, aucun jeton n'a pu y être retiré.\n" RST, col);
+            return 0;
+        } else{
+            grid->grille[line][col-1] = '_';
+            return 1;
+        }
+    }
+}
+
+int checkWinner(GRID* grid, int N){
+
+}
+
 void saveToFile(GRID *grid)
 {
     FILE *file = fopen("file.bin", "w");

@@ -69,7 +69,22 @@ int moveChoice(int round);
  */
 int addToken(GRID *grid, int col, char token);
 
-// int re
+/**
+ * @brief 
+ * 
+ * @param grid 
+ * @param col 
+ * @return int 
+ */
+int removeToken(GRID *grid, int col);
+
+/**
+ * @brief 
+ * 
+ * @param grid 
+ * @return int 
+ */
+int checkWinner(GRID* grid, int N);
 
 /**
  * @brief Function saving the current grid to a .bin file
