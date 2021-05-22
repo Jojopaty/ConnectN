@@ -65,7 +65,7 @@ int main(int argc, char *argv[])
                     removedColumn = (hasPlayed > 0) ? column : 0;
                     break;
                 case 3:
-                    saveToFile(gameBoard, player);
+                    saveToFile(gameBoard, (player == 1) ? 2 : 1);
                     quit = 1;
                     break;
                 default:
