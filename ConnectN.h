@@ -96,6 +96,8 @@ int checkVert(gridClass *grid, int N, tokenClass *token);
 
 int checkHoriz(gridClass *grid, int N, tokenClass *token);
 
+int checkDiag(gridClass *grid, int N, tokenClass *token);
+
 /**
  * @brief Function saving the current grid to a .bin file
  * 

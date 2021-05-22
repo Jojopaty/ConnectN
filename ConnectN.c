@@ -134,6 +134,7 @@ int addToken(gridClass *grid, int col, tokenClass *token)
             grid->grille[line - 1][col - 1] = (token->type);
             token->posLin = line - 1;
             token->posCol = col - 1;
+
             return 1;
         }
     }
@@ -181,6 +182,10 @@ int checkVert(gridClass *grid, int N, tokenClass *token)
         {
             aligned++;
         }
+        else if (aligned == N)
+        {
+            return 1;
+        }
         else
         {
             aligned = 0;
@@ -199,11 +204,15 @@ int checkVert(gridClass *grid, int N, tokenClass *token)
 int checkHoriz(gridClass *grid, int N, tokenClass *token) //TODO Check this function to see where the bug is
 {
     int aligned = 0;
-    for (int i = 0; i < grid->col; i++)
+    for (int i = 0; i < grid->lin; i++)
     {
         if ((grid->grille[(token->posLin)][i]) == (token->type))
         {
             aligned++;
+        }
+        else if (aligned == N)
+        {
+            return 1;
         }
         else
         {

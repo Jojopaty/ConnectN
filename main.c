@@ -80,10 +80,13 @@ int main(int argc, char *argv[])
                 player = (player == 1) ? 2 : 1;
                 shot++;
                 hasWon = checkWinner(gameBoard, toAlign, token);
+                if (hasWon > 0){
+                    printf(CYN"Le joueur %d a gagné. Félicitations !\n"RST, player);
+                }
             }
             else
             {
-                printf(GRN"\nLa partie a été enregistrée, pour la continuer, sélectionnez 'Continuer la dernière partie' au prochain démarrage du jeu.\n"CYN"A bientôt !\n"RST);
+                printf(GRN "\nLa partie a été enregistrée, pour la continuer, sélectionnez 'Continuer la dernière partie' au prochain démarrage du jeu.\n" CYN "A bientôt !\n" RST);
             }
         }
 
