@@ -52,7 +52,7 @@ gridClass *initializeGrid(gridClass *newGrid)
 
     return newGrid;
 }
-
+ 
 void showGrid(gridClass *grid)
 {
     for (int i = 0; i < grid->lin; i++)
