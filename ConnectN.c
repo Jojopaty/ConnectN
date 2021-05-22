@@ -201,7 +201,7 @@ int checkVert(gridClass *grid, int N, tokenClass *token)
     }
 }
 
-int checkHoriz(gridClass *grid, int N, tokenClass *token) //TODO Check this function to see where the bug is
+int checkHoriz(gridClass *grid, int N, tokenClass *token)
 {
     int aligned = 0;
     for (int i = 0; i < grid->lin; i++)
@@ -308,7 +308,7 @@ int checkDiagBotTop(gridClass *grid, int N, tokenClass *token)
 
 void saveToFile(gridClass *grid)
 {
-    FILE *file = fopen("file.bin", "w");
+    FILE *file = fopen("game.save", "w");
     char array[(grid->lin - 1)];
     char size[16];
     sprintf(size, "%d\n", grid->col);

@@ -62,7 +62,7 @@ int main(int argc, char *argv[])
                     printf("\nRetirer un jeton dans quelle colonne ? ");
                     column = safeIntInput();
                     hasPlayed = removeToken(gameBoard, column);
-                    removedColumn = column;
+                    removedColumn = (hasPlayed > 0) ? column : 0;
                     break;
                 case 3:
                     saveToFile(gameBoard); //TODO Add next player in saved file
@@ -77,16 +77,18 @@ int main(int argc, char *argv[])
             {
                 clear();
                 showGrid(gameBoard);
+
+                hasWon = checkWinner(gameBoard, toAlign, token);
+                if (hasWon > 0)
+                {
+                    printf(CYN "Le joueur %d a gagné. Félicitations !\n" RST, player);
+                }
                 player = (player == 1) ? 2 : 1;
                 shot++;
-                hasWon = checkWinner(gameBoard, toAlign, token);
-                if (hasWon > 0){
-                    printf(CYN"Le joueur %d a gagné. Félicitations !\n"RST, player);
-                }
             }
             else
             {
-                printf(GRN "\nLa partie a été enregistrée, pour la continuer, sélectionnez 'Continuer la dernière partie' au prochain démarrage du jeu.\n" CYN "A bientôt !\n" RST);
+                printf(GRN "\nLa partie a été enregistrée. Pour la continuer, sélectionnez 'Continuer la dernière partie' au prochain démarrage du jeu.\n" CYN "A bientôt !\n" RST);
             }
         }
 
