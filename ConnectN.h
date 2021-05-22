@@ -4,6 +4,7 @@
 #include <time.h>
 #include <colors.h>
 
+
 typedef struct
 {
     int lin;
