@@ -52,7 +52,7 @@ gridClass *initializeGrid(gridClass *newGrid)
 
     return newGrid;
 }
- 
+
 void showGrid(gridClass *grid)
 {
     for (int i = 0; i < grid->lin; i++)
@@ -110,7 +110,16 @@ int moveChoice(int num)
     }
     else
     {
-        return 1; // First game round -> no token to remove -> function addToken called;
+        printf(GRN "\nQue souhaitez-vous faire ?" RST "\n1. Ajouter un jeton\n2. Sauvegarder et quitter\nQuel est votre choix ? ");
+        int choice = safeIntInput();
+
+        while (choice < 1 || choice > 2)
+        {
+            printf(RED "\nEntrée incorrecte, veuillez recommencer" RST "\n1. Ajouter un jeton\n2. Sauvegarder et quitter\nQuel est votre choix ? ");
+            choice = safeIntInput();
+        }
+
+        return (choice == 1) ? choice : choice + 1;
     }
 }
 
