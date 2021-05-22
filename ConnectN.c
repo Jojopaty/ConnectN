@@ -336,12 +336,15 @@ int checkDiagBotTop(gridClass *grid, int N, tokenClass *token)
     }
 }
 
-void saveToFile(gridClass *grid)
+void saveToFile(gridClass *grid, int nextPlay)
 {
     FILE *file = fopen("game.save", "w");
     char array[(grid->lin - 1)];
     char size[16];
+    char player[16];
+    sprintf(player, "%d\n", nextPlay);
     sprintf(size, "%d\n", grid->col);
+    fputs(player, file);
     fputs(size, file);
     for (int i = 0; i < grid->lin; i++)
     {

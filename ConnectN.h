@@ -141,7 +141,7 @@ int checkDiagBotTop(gridClass *grid, int N, tokenClass *token);
  * 
  * @param grid The grid to save
  */
-void saveToFile(gridClass *grid);
+void saveToFile(gridClass *grid, int player);
 
 /**
  * @brief Functions that clears the command prompt supporting both Windows and Linux OS.
