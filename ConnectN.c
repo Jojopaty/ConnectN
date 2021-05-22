@@ -378,7 +378,7 @@ int loadFromFile(gridClass *grid, int *player, int *align)
         sscanf(line, "%d", align);
         
 
-        printf("Player = %d, Col = %d\n", *player, *align);
+        printf("Player = %d, Col = %d\n", *player, *align);     //TODO Make the function return a grid and make it work !
 
         // while ((ch = fgetc(file)) != EOF){
         // }
