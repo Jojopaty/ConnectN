@@ -17,7 +17,7 @@ int main(int argc, char *argv[])
 
     gridClass *gameBoard = malloc(sizeof(gridClass));
     tokenClass *token = malloc(sizeof(tokenClass));
-    int player;
+    int* player = malloc(sizeof(int));
     int column;
     int hasPlayed = 0;
     int hasWon = -1;
@@ -32,11 +32,11 @@ int main(int argc, char *argv[])
         clear();
         printf(BWHT BLK "Démarrage de la nouvelle partie...\n" RST);
         createAndInitializeGrid(gameBoard, toAlign);
-        player = rand() % 2 + 1;
+        *player = rand() % 2 + 1;
         while (hasWon < 0 && quit < 1 && draw < 1)
         {
-            printf("\nJoueur %d\n", player);
-            token->type = ((player == 1) ? 'O' : 'X');
+            printf("\nJoueur %d\n", *player);
+            token->type = ((*player == 1) ? 'O' : 'X');
             hasPlayed = 0;
             do
             {
@@ -65,7 +65,7 @@ int main(int argc, char *argv[])
                     removedColumn = (hasPlayed > 0) ? column : 0;
                     break;
                 case 3:
-                    saveToFile(gameBoard, (player == 1) ? 2 : 1);
+                    saveToFile(gameBoard, (*player == 1) ? 2 : 1);
                     quit = 1;
                     break;
                 default:
@@ -89,13 +89,13 @@ int main(int argc, char *argv[])
                 hasWon = checkWinner(gameBoard, toAlign, token);
                 if (hasWon > -1)
                 {
-                    printf(CYN "Le joueur %d a gagné. Félicitations !\n" RST, player);
+                    printf(CYN "Le joueur %d a gagné. Félicitations !\n" RST, *player);
                 }
                 if (draw > 0)
                 {
                     printf(YEL "Egalité ! Toute la surface de jeu a été remplie sans qu'un joueur gagne.\n" RST);
                 }
-                player = (player == 1) ? 2 : 1;
+                *player = (*player == 1) ? 2 : 1;
             }
             else
             {
@@ -106,6 +106,7 @@ int main(int argc, char *argv[])
         break;
     case 2:
         printf(BLU "Loading last saved game\n" RST);
+
         break;
     case 3:
         printf(BLU "Bye\n" RST);

@@ -356,6 +356,10 @@ void saveToFile(gridClass *grid, int nextPlay)
     fclose(file);
 }
 
+void loadFromFile(){
+
+}
+
 void clear()
 {
 #if defined(_WIN64) || defined(_WIN32)

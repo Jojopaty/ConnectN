@@ -4,7 +4,6 @@
 #include <time.h>
 #include <colors.h>
 
-
 typedef struct
 {
     int lin;
@@ -142,6 +141,12 @@ int checkDiagBotTop(gridClass *grid, int N, tokenClass *token);
  * @param grid The grid to save
  */
 void saveToFile(gridClass *grid, int player);
+
+/**
+ * @brief 
+ * 
+ */
+void loadFromFile();
 
 /**
  * @brief Functions that clears the command prompt supporting both Windows and Linux OS.
