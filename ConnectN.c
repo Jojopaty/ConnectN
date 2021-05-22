@@ -29,9 +29,9 @@ gridClass *createAndInitializeGrid(gridClass *newGrid, int *align)
     }
     *align = input;
     newGrid->col = newGrid->lin = input + 2;
+    newGrid->tokenNumber = 0;
     clear();
     initializeGrid(newGrid);
-
     return newGrid;
 }
 
@@ -59,7 +59,19 @@ void showGrid(gridClass *grid)
     {
         for (int j = 0; j < grid->col; j++)
         {
-            printf("| %c ", grid->grille[i][j]);
+            printf("| ");
+            if (grid->grille[i][j] == 'O')
+            {
+                printf(YEL "%c " RST, grid->grille[i][j]);
+            }
+            else if (grid->grille[i][j] == 'X')
+            {
+                printf(RED "%c " RST, grid->grille[i][j]);
+            }
+            else
+            {
+                printf("%c ", grid->grille[i][j]);
+            }
         }
         printf("|\n");
     }
@@ -82,9 +94,9 @@ void freeMemory(gridClass *grid, int *num)
     num = NULL;
 }
 
-int moveChoice(int round)
+int moveChoice(int num)
 {
-    if (round > 0)
+    if (num > 0)
     {
         printf(GRN "\nQue souhaitez-vous faire ?" RST "\n1. Ajouter un jeton\n2. Retirer un jeton\n3. Sauvegarder et quitter\nQuel est votre choix ? ");
         int choice = safeIntInput();
@@ -132,9 +144,9 @@ int addToken(gridClass *grid, int col, tokenClass *token)
         else
         {
             grid->grille[line - 1][col - 1] = (token->type);
+            grid->tokenNumber++;
             token->posLin = line - 1;
             token->posCol = col - 1;
-
             return 1;
         }
     }
@@ -163,6 +175,7 @@ int removeToken(gridClass *grid, int col)
         else
         {
             grid->grille[line][col - 1] = '_';
+            grid->tokenNumber--;
             return 1;
         }
     }

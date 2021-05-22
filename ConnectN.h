@@ -9,6 +9,7 @@ typedef struct
     int lin;
     int col;
     char **grille;
+    int tokenNumber;
 } gridClass;
 
 typedef struct
@@ -60,10 +61,10 @@ void freeMemory(gridClass *grid, int *num);
 /**
  * @brief 
  * 
- * @param round 
+ * @param num
  * @return int 
  */
-int moveChoice(int round);
+int moveChoice(int num);
 
 /**
  * @brief Function for adding a token to the initialized grid
