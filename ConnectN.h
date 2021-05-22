@@ -90,16 +90,50 @@ int removeToken(gridClass *grid, int col);
  * @brief 
  * 
  * @param grid 
+ * @param N 
+ * @param token 
  * @return int 
  */
 int checkWinner(gridClass *grid, int *N, tokenClass *token);
 
+/**
+ * @brief 
+ * 
+ * @param grid 
+ * @param N 
+ * @param token 
+ * @return int 
+ */
 int checkVert(gridClass *grid, int N, tokenClass *token);
 
+/**
+ * @brief 
+ * 
+ * @param grid 
+ * @param N 
+ * @param token 
+ * @return int 
+ */
 int checkHoriz(gridClass *grid, int N, tokenClass *token);
 
+/**
+ * @brief 
+ * 
+ * @param grid 
+ * @param N 
+ * @param token 
+ * @return int 
+ */
 int checkDiagTopBot(gridClass *grid, int N, tokenClass *token);
 
+/**
+ * @brief 
+ * 
+ * @param grid 
+ * @param N 
+ * @param token 
+ * @return int 
+ */
 int checkDiagBotTop(gridClass *grid, int N, tokenClass *token);
 
 /**
