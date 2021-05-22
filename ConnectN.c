@@ -170,7 +170,7 @@ int removeToken(gridClass *grid, int col)
 
 int checkWinner(gridClass *grid, int *N, tokenClass *token)
 {
-    return checkVert(grid, *N, token) + checkHoriz(grid, *N, token);
+    return checkVert(grid, *N, token) + checkHoriz(grid, *N, token) + checkDiagTopBot(grid, *N, token) + checkDiagBotTop(grid, *N, token);
 }
 
 int checkVert(gridClass *grid, int N, tokenClass *token)
@@ -218,6 +218,83 @@ int checkHoriz(gridClass *grid, int N, tokenClass *token) //TODO Check this func
         {
             aligned = 0;
         }
+    }
+    if (aligned == N)
+    {
+        return 1;
+    }
+    else
+    {
+        return 0;
+    }
+}
+
+int checkDiagTopBot(gridClass *grid, int N, tokenClass *token)
+{
+    int aligned = 0;
+    int lin = token->posLin;
+    int col = token->posCol;
+
+    while (lin > 0 && col > 0)
+    {
+        lin--;
+        col--;
+    }
+    while (lin < grid->lin && col < grid->col)
+    {
+        if ((grid->grille[lin][col]) == (token->type))
+        {
+            aligned++;
+        }
+        else if (aligned == N)
+        {
+            return 1;
+        }
+        else
+        {
+            aligned = 0;
+        }
+        lin++;
+        col++;
+    }
+    if (aligned == N)
+    {
+        return 1;
+    }
+    else
+    {
+        return 0;
+    }
+}
+
+int checkDiagBotTop(gridClass *grid, int N, tokenClass *token)
+{
+    int aligned = 0;
+    int lin = token->posLin;
+    int col = token->posCol;
+
+    while (col > 0 && lin < (grid->lin - 1))
+    {
+        lin++;
+        col--;
+    }
+
+    while (lin > 0 && col < grid->col)
+    {
+        if ((grid->grille[lin][col]) == (token->type))
+        {
+            aligned++;
+        }
+        else if (aligned == N)
+        {
+            return 1;
+        }
+        else
+        {
+            aligned = 0;
+        }
+        lin--;
+        col++;
     }
     if (aligned == N)
     {
