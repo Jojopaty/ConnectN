@@ -170,7 +170,15 @@ int removeToken(gridClass *grid, int col)
 
 int checkWinner(gridClass *grid, int *N, tokenClass *token)
 {
-    return checkVert(grid, *N, token) + checkHoriz(grid, *N, token) + checkDiagTopBot(grid, *N, token) + checkDiagBotTop(grid, *N, token);
+    int winner = checkVert(grid, *N, token) + checkHoriz(grid, *N, token) + checkDiagTopBot(grid, *N, token) + checkDiagBotTop(grid, *N, token);
+    if (winner != 0)
+    {
+        return ((token->type == 'O') ? 0 : 1);
+    }
+    else
+    {
+        return -1;
+    }
 }
 
 int checkVert(gridClass *grid, int N, tokenClass *token)

@@ -21,7 +21,7 @@ int main(int argc, char *argv[])
     int column;
     int shot = 0;
     int hasPlayed = 0;
-    int hasWon = 0;
+    int hasWon = -1;
     int quit = 0;
     int removedColumn = 0;
     int *toAlign = malloc(sizeof(int)); // pointer on int
@@ -33,7 +33,7 @@ int main(int argc, char *argv[])
         printf(BWHT BLK "Démarrage de la nouvelle partie...\n" RST);
         createAndInitializeGrid(gameBoard, toAlign);
         player = rand() % 2 + 1;
-        while (hasWon < 1 && quit < 1)
+        while (hasWon < 0 && quit < 1)
         {
             printf("\nJoueur %d\n", player);
             token->type = ((player == 1) ? 'O' : 'X');
@@ -79,7 +79,7 @@ int main(int argc, char *argv[])
                 showGrid(gameBoard);
 
                 hasWon = checkWinner(gameBoard, toAlign, token);
-                if (hasWon > 0)
+                if (hasWon > -1)
                 {
                     printf(CYN "Le joueur %d a gagné. Félicitations !\n" RST, player);
                 }
