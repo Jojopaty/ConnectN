@@ -17,7 +17,7 @@ int main(int argc, char *argv[])
 
     gridClass *gameBoard = malloc(sizeof(gridClass));
     tokenClass *token = malloc(sizeof(tokenClass));
-    int* player = malloc(sizeof(int));
+    int *player = malloc(sizeof(int)); // pointer on int
     int column;
     int hasPlayed = 0;
     int hasWon = -1;
@@ -106,7 +106,14 @@ int main(int argc, char *argv[])
         break;
     case 2:
         printf(BLU "Loading last saved game\n" RST);
+        if (loadFromFile(gameBoard, player, toAlign) == 0)
+        {
+            return EXIT_FAILURE;
+        }
+        else
+        {
 
+        }
         break;
     case 3:
         printf(BLU "Bye\n" RST);
@@ -117,7 +124,7 @@ int main(int argc, char *argv[])
         break;
     }
 
-    freeMemory(gameBoard, toAlign);
+    freeMemory(gameBoard, toAlign, player);
 
     return EXIT_SUCCESS;
 }

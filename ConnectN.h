@@ -56,7 +56,7 @@ void showGrid(gridClass *grid);
  * @param grid 
  * @param num 
  */
-void freeMemory(gridClass *grid, int *num);
+void freeMemory(gridClass *grid, int *num, int *num2);
 
 /**
  * @brief 
@@ -145,8 +145,11 @@ void saveToFile(gridClass *grid, int player);
 /**
  * @brief 
  * 
+ * @param grid 
+ * @param player 
+ * @return int 
  */
-void loadFromFile();
+int loadFromFile(gridClass *grid, int *player, int *align);
 
 /**
  * @brief Functions that clears the command prompt supporting both Windows and Linux OS.

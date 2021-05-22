@@ -77,7 +77,7 @@ void showGrid(gridClass *grid)
     }
 }
 
-void freeMemory(gridClass *grid, int *num)
+void freeMemory(gridClass *grid, int *num, int *num2)
 {
     for (int i = 0; i < grid->col; i++)
     {
@@ -92,6 +92,8 @@ void freeMemory(gridClass *grid, int *num)
 
     free(num);
     num = NULL;
+    free(num2);
+    num2 = NULL;
 }
 
 int moveChoice(int num)
@@ -340,12 +342,12 @@ void saveToFile(gridClass *grid, int nextPlay)
 {
     FILE *file = fopen("game.save", "w");
     char array[(grid->lin - 1)];
-    char size[16];
-    char player[16];
-    sprintf(player, "%d\n", nextPlay);
-    sprintf(size, "%d\n", grid->col);
-    fputs(player, file);
-    fputs(size, file);
+    // char size[16];
+    // char player[16];
+    // sprintf(player, "%d\n", nextPlay);
+    // sprintf(size, "%d\n", grid->col);
+    fprintf(file, "%d\n", nextPlay);
+    fprintf(file, "%d\n", grid->col-2);
     for (int i = 0; i < grid->lin; i++)
     {
         strcpy(array, grid->grille[i]);
@@ -356,8 +358,32 @@ void saveToFile(gridClass *grid, int nextPlay)
     fclose(file);
 }
 
-void loadFromFile(){
+int loadFromFile(gridClass *grid, int *player, int *align)
+{
+    // char ch;
+    FILE *file = fopen("game.save", "r");
+    if (file == NULL)
+    {
+        printf("Une erreur est survenue lors de la lecture du fichier");
+        return 0;
+    }
+    else
+    {
+        char line[1024];
+        // int col = 0;
+        fgets(line, 1024, file); // Reading first line of the file aka the next player
+        sscanf(line, "%d", player);
 
+        fgets(line, 1024, file); // Reading second line of the file aka the number of columns and lines (they are equal since the board is a saquare)
+        sscanf(line, "%d", align);
+        
+
+        printf("Player = %d, Col = %d\n", *player, *align);
+
+        // while ((ch = fgetc(file)) != EOF){
+        // }
+        return 1;
+    }
 }
 
 void clear()
