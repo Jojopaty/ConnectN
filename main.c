@@ -9,7 +9,7 @@
  * 
  */
 
-#include "ConnectN.h"
+#include <ConnectN.h>
 
 int main(int argc, char *argv[])
 {

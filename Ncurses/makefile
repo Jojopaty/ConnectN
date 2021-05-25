@@ -1,8 +1,9 @@
 all: clean ncurses run
 
-ncurses: ncurses.c
-	gcc -lncurses ncurses.c -o ncurses.exe
 clean:
-	rm ncurses.exe
+	rm grass.exe
+ncurses: ncurses.c
+	gcc -lncursesw grass.c -o grass.exe
+
 run:
-	./ncurses.exe
+	./grass.exe
