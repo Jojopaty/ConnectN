@@ -346,8 +346,9 @@ void saveToFile(gridClass *grid, int nextPlay)
     // char player[16];
     // sprintf(player, "%d\n", nextPlay);
     // sprintf(size, "%d\n", grid->col);
-    fprintf(file, "%d\n", nextPlay);
-    fprintf(file, "%d\n", grid->col-2);
+    fprintf(file, "Next player :\t%d\n", nextPlay);
+    fprintf(file, "Grid size : \t%d\n", grid->col-2);
+    fprintf(file, "GameBoard : ");
     for (int i = 0; i < grid->lin; i++)
     {
         strcpy(array, grid->grille[i]);
@@ -372,11 +373,12 @@ int loadFromFile(gridClass *grid, int *player, int *align)
         char line[1024];
         // int col = 0;
         fgets(line, 1024, file); // Reading first line of the file aka the next player
-        sscanf(line, "%d", player);
+        sscanf(line, "Next player :\t%d", player);
 
         fgets(line, 1024, file); // Reading second line of the file aka the number of columns and lines (they are equal since the board is a saquare)
-        sscanf(line, "%d", align);
+        sscanf(line, "Grid size : \t%d", align);
         
+        fgets(line, 1024, file); // Gets "GameBoard" but dumps it as it is not necessary in load function.
 
         printf("Player = %d, Col = %d\n", *player, *align);     //TODO Make the function return a grid and make it work !
 
