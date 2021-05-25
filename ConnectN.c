@@ -1,4 +1,4 @@
-#include "ConnectN.h"
+#include <ConnectN.h>
 
 int startGame()
 {
