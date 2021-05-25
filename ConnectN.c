@@ -28,7 +28,8 @@ gridClass *createAndInitializeGrid(gridClass *newGrid, int *align)
         input = safeIntInput();
     }
     *align = input;
-    return initializeGridSize(newGrid, align);
+    initializeGridSize(newGrid, align);
+    return newGrid;
 }
 
 gridClass *initializeGridSize(gridClass *grid, int *align)
