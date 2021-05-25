@@ -32,6 +32,8 @@ int main(int argc, char *argv[])
         clear();
         printf(BWHT BLK "Démarrage de la nouvelle partie...\n" RST);
         createAndInitializeGrid(gameBoard, toAlign);
+        clear();
+        showGrid(gameBoard);
         *player = rand() % 2 + 1;
         while (hasWon < 0 && quit < 1 && draw < 1)
         {
@@ -112,7 +114,8 @@ int main(int argc, char *argv[])
         }
         else
         {
-
+            clear();
+            showGrid(gameBoard);
         }
         break;
     case 3:

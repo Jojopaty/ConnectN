@@ -36,6 +36,15 @@ int startGame();
 gridClass *createAndInitializeGrid(gridClass *newGrid, int *align);
 
 /**
+ * @brief 
+ * 
+ * @param grid 
+ * @param align 
+ * @return gridClass* 
+ */
+gridClass *initializeGridSize(gridClass *grid, int *align);
+
+/**
  * @brief Initalizing the grid with '_' characters for empty slots.
  * 
  * @param newGrid The grid to work with.

@@ -28,11 +28,15 @@ gridClass *createAndInitializeGrid(gridClass *newGrid, int *align)
         input = safeIntInput();
     }
     *align = input;
-    newGrid->col = newGrid->lin = input + 2;
-    newGrid->tokenNumber = 0;
-    clear();
-    initializeGrid(newGrid);
-    return newGrid;
+    return initializeGridSize(newGrid, align);
+}
+
+gridClass *initializeGridSize(gridClass *grid, int *align)
+{
+    grid->col = grid->lin = *align + 2;
+    grid->tokenNumber = 0;
+    initializeGrid(grid);
+    return grid;
 }
 
 gridClass *initializeGrid(gridClass *newGrid)
@@ -48,7 +52,6 @@ gridClass *initializeGrid(gridClass *newGrid)
             newGrid->grille[i][j] = '_';
         }
     }
-    showGrid(newGrid);
 
     return newGrid;
 }
@@ -346,9 +349,9 @@ void saveToFile(gridClass *grid, int nextPlay)
     // char player[16];
     // sprintf(player, "%d\n", nextPlay);
     // sprintf(size, "%d\n", grid->col);
-    fprintf(file, "Next player :\t%d\n", nextPlay);
-    fprintf(file, "Grid size : \t%d\n", grid->col-2);
-    fprintf(file, "GameBoard : ");
+    fprintf(file, "Next player :   \t%d\n", nextPlay);
+    fprintf(file, "Tokens to align :\t%d\n", grid->col - 2);
+    fprintf(file, "GameBoard :\n");
     for (int i = 0; i < grid->lin; i++)
     {
         strcpy(array, grid->grille[i]);
@@ -373,14 +376,24 @@ int loadFromFile(gridClass *grid, int *player, int *align)
         char line[1024];
         // int col = 0;
         fgets(line, 1024, file); // Reading first line of the file aka the next player
-        sscanf(line, "Next player :\t%d", player);
+        sscanf(line, "Next player :   \t%d", player);
 
         fgets(line, 1024, file); // Reading second line of the file aka the number of columns and lines (they are equal since the board is a saquare)
-        sscanf(line, "Grid size : \t%d", align);
-        
+        sscanf(line, "Tokens to align :\t%d", align);
+
         fgets(line, 1024, file); // Gets "GameBoard" but dumps it as it is not necessary in load function.
 
-        printf("Player = %d, Col = %d\n", *player, *align);     //TODO Make the function return a grid and make it work !
+        printf("Player = %d, Col = %d\n", *player, *align); //TODO Make the function return a grid and make it work !
+
+        initializeGridSize(grid, align);
+        for (int i = 0; i < *align + 2; i++)
+        {
+            fgets(line, 1024, file);
+            for (int j = 0; j < *align + 2; j++)
+            {
+                grid->grille[i][j] = line[j];
+            }
+        }
 
         // while ((ch = fgetc(file)) != EOF){
         // }
