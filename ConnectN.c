@@ -374,7 +374,7 @@ int loadFromFile(gridClass *grid, int *player, int *align)
     else
     {
         char line[1024];
-        // int col = 0;
+
         fgets(line, 1024, file); // Reading first line of the file aka the next player
         sscanf(line, "Next player :   \t%d", player);
 
@@ -383,15 +383,15 @@ int loadFromFile(gridClass *grid, int *player, int *align)
 
         fgets(line, 1024, file); // Gets "GameBoard" but dumps it as it is not necessary in load function.
 
-        printf("Player = %d, Col = %d\n", *player, *align); //TODO Make the function return a grid and make it work !
+        printf("Player = %d, Col = %d\n", *player, *align);
 
         initializeGridSize(grid, align);
         for (int i = 0; i < *align + 2; i++)
         {
-            fgets(line, 1024, file);
+            fgets(line, 1024, file); //Gets the line of characers corresponding to the line of the grid
             for (int j = 0; j < *align + 2; j++)
             {
-                grid->grille[i][j] = line[j];
+                grid->grille[i][j] = line[j]; //Gets the individual character for the specified coordinates in the grid
             }
         }
 
