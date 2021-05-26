@@ -4,7 +4,6 @@
 #include <time.h>
 #include <colors.h>
 
-
 typedef struct
 {
     int lin;
@@ -59,6 +58,14 @@ gridClass *initializeGrid(gridClass *newGrid);
  * @param grid The grid to print.
  */
 void showGrid(gridClass *grid);
+
+/**
+ * @brief 
+ * 
+ * @param gameBoard 
+ * @param nbPlayers 
+ */
+void game(gridClass *gameBoard, tokenClass *token, int *toAlign, int *nbPlayers, int *player);
 
 /**
  * @brief 

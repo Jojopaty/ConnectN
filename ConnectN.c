@@ -14,7 +14,7 @@ int startGame(int *nbPlayer)
         startChoice = safeIntInput();
     }
     clear();
-    printf("Choix du nombre de joueurs\n1. Partie solo contre l'ordinateur\n2. Partie à deux joueurs\nQuel est votre choix ? ");
+    printf(GRN "Choix du nombre de joueurs\n" RST "1. Partie solo contre l'ordinateur\n2. Partie à deux joueurs\nQuel est votre choix ? ");
     *nbPlayer = safeIntInput();
     while (*nbPlayer < 1 || *nbPlayer > 2)
     {
@@ -87,6 +87,85 @@ void showGrid(gridClass *grid)
             }
         }
         printf("|\n");
+    }
+}
+
+void game(gridClass *gameBoard, tokenClass *token, int *toAlign, int *nbPlayers, int *player)
+{
+    int column;
+    int hasPlayed = 0;
+    int hasWon = -1;
+    int quit = 0;
+    int draw = 0;
+    int removedColumn = 0;
+    while (hasWon < 0 && quit < 1 && draw < 1)
+    {
+        printf("\nJoueur %d\n", *player);
+        token->type = ((*player == 1) ? 'O' : 'X');
+        hasPlayed = 0;
+        do
+        {
+            switch (moveChoice(gameBoard->tokenNumber))
+            {
+            case 1:
+
+                printf("\nAjouter un jeton dans quelle colonne ? ");
+                column = safeIntInput();
+                if (column != removedColumn)
+                {
+                    hasPlayed = addToken(gameBoard, column, token);
+                    removedColumn = 0;
+                }
+                else
+                {
+                    hasPlayed = 0;
+                    printf(RED "Vous ne pouvez pas insérer de jeton dans cette colonne. Un jeton vient d'y être retiré." RST);
+                }
+                break;
+            case 2:
+
+                printf("\nRetirer un jeton dans quelle colonne ? ");
+                column = safeIntInput();
+                hasPlayed = removeToken(gameBoard, column);
+                removedColumn = (hasPlayed > 0) ? column : 0;
+                break;
+            case 3:
+                saveToFile(gameBoard, (*player == 1) ? 2 : 1);
+                quit = 1;
+                break;
+            default:
+                break;
+            }
+
+            if (gameBoard->tokenNumber == (gameBoard->col * gameBoard->lin))
+            {
+                draw = 1;
+            }
+            else
+            {
+                draw = 0;
+            }
+        } while (quit != 1 && hasPlayed != 1 && draw != 1);
+
+        if (quit < 1)
+        {
+            clear();
+            showGrid(gameBoard);
+            hasWon = checkWinner(gameBoard, toAlign, token);
+            if (hasWon > -1)
+            {
+                printf(CYN "Le joueur %d a gagné. Félicitations !\n" RST, *player);
+            }
+            if (draw > 0)
+            {
+                printf(YEL "Egalité ! Toute la surface de jeu a été remplie sans qu'un joueur gagne.\n" RST);
+            }
+            *player = (*player == 1) ? 2 : 1;
+        }
+        else
+        {
+            printf(GRN "\nLa partie a été enregistrée. Pour la continuer, sélectionnez 'Continuer la dernière partie' au prochain démarrage du jeu.\n" CYN "A bientôt !\n" RST);
+        }
     }
 }
 
@@ -376,12 +455,11 @@ void saveToFile(gridClass *grid, int nextPlay)
 
 int loadFromFile(gridClass *grid, int *player, int *align)
 {
-    // char ch;
     FILE *file = fopen("game.save", "r");
     if (file == NULL)
     {
         printf("Une erreur est survenue lors de la lecture du fichier");
-        return 0;
+        return -1;
     }
     else
     {
@@ -395,21 +473,19 @@ int loadFromFile(gridClass *grid, int *player, int *align)
 
         fgets(line, 1024, file); // Gets "GameBoard" but dumps it as it is not necessary in load function.
 
-        printf("Player = %d, Col = %d\n", *player, *align);
-
         initializeGridSize(grid, align);
         for (int i = 0; i < *align + 2; i++)
         {
             fgets(line, 1024, file); //Gets the line of characers corresponding to the line of the grid
             for (int j = 0; j < *align + 2; j++)
             {
-                grid->grille[i][j] = line[j]; //Gets the individual character for the specified coordinates in the grid
+                grid->grille[i][j] = line[j]; //Gets the individual character for the specified coordinates in the grid and stores it
+                if(grid->grille[i][j] == 'X' || grid->grille[i][j] == 'O'){
+                    grid->tokenNumber++;
+                }
             }
         }
-
-        // while ((ch = fgetc(file)) != EOF){
-        // }
-        return 1;
+        return *player - 1; //Returns the next player to play (0 for player 1 and 1 for player 2 according to the directives)
     }
 }
 
@@ -431,7 +507,7 @@ int safeIntInput()
 
     fgets(input, 10, stdin);
     fflush(stdin);
-    
+
     if (sscanf(input, "%d", &num) != 1)
     {
         return -__INT_MAX__;
