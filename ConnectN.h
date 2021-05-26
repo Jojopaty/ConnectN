@@ -108,6 +108,8 @@ int addToken(gridClass *grid, int col, tokenClass *token);
  */
 int removeToken(gridClass *grid, int col);
 
+int checkDraw(gridClass* grid);
+
 /**
  * @brief 
  * 

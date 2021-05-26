@@ -141,14 +141,6 @@ void game(gridClass *gameBoard, tokenClass *token, int *toAlign, int *nbPlayers,
                 break;
             }
 
-            if (gameBoard->tokenNumber == (gameBoard->col * gameBoard->lin))
-            {
-                draw = 1;
-            }
-            else
-            {
-                draw = 0;
-            }
         } while (quit != 1 && hasPlayed != 1 && draw != 1);
 
         if (quit < 1)
@@ -156,13 +148,14 @@ void game(gridClass *gameBoard, tokenClass *token, int *toAlign, int *nbPlayers,
             clear();
             showGrid(gameBoard);
             hasWon = checkWinner(gameBoard, toAlign, token);
+            draw = checkDraw(gameBoard);
             if (hasWon > -1)
             {
                 printf(CYN "Le joueur %d a gagné. Félicitations !\n" RST, *player);
             }
-            if (draw > 0)
+            else if (draw > 0)
             {
-                printf(YEL "Egalité ! Toute la surface de jeu a été remplie sans qu'un joueur gagne.\n" RST);
+                printf(YEL "Egalité ! Toute la surface de jeu a été remplie sans qu'un joueur ne gagne.\n" RST);
             }
             *player = (*player == 1) ? 2 : 1;
         }
@@ -170,6 +163,18 @@ void game(gridClass *gameBoard, tokenClass *token, int *toAlign, int *nbPlayers,
         {
             printf(GRN "\nLa partie a été enregistrée. Pour la continuer, sélectionnez 'Continuer la dernière partie' au prochain démarrage du jeu.\n" CYN "A bientôt !\n" RST);
         }
+    }
+}
+
+int checkDraw(gridClass *grid)
+{
+    if (grid->tokenNumber == (grid->col * grid->lin))
+    {
+        return 1;
+    }
+    else
+    {
+        return 0;
     }
 }
 
@@ -315,7 +320,7 @@ int checkVert(gridClass *grid, int N, tokenClass *token)
         {
             aligned++;
         }
-        else if (aligned == N)
+        else if (aligned >= N)
         {
             return 1;
         }
@@ -324,7 +329,7 @@ int checkVert(gridClass *grid, int N, tokenClass *token)
             aligned = 0;
         }
     }
-    if (aligned == N)
+    if (aligned >= N)
     {
         return 1;
     }
@@ -343,7 +348,7 @@ int checkHoriz(gridClass *grid, int N, tokenClass *token)
         {
             aligned++;
         }
-        else if (aligned == N)
+        else if (aligned >= N)
         {
             return 1;
         }
@@ -352,7 +357,7 @@ int checkHoriz(gridClass *grid, int N, tokenClass *token)
             aligned = 0;
         }
     }
-    if (aligned == N)
+    if (aligned >= N)
     {
         return 1;
     }
@@ -379,7 +384,7 @@ int checkDiagTopBot(gridClass *grid, int N, tokenClass *token)
         {
             aligned++;
         }
-        else if (aligned == N)
+        else if (aligned >= N)
         {
             return 1;
         }
@@ -390,7 +395,7 @@ int checkDiagTopBot(gridClass *grid, int N, tokenClass *token)
         lin++;
         col++;
     }
-    if (aligned == N)
+    if (aligned >= N)
     {
         return 1;
     }
@@ -418,7 +423,7 @@ int checkDiagBotTop(gridClass *grid, int N, tokenClass *token)
         {
             aligned++;
         }
-        else if (aligned == N)
+        else if (aligned >= N)
         {
             return 1;
         }
@@ -429,7 +434,7 @@ int checkDiagBotTop(gridClass *grid, int N, tokenClass *token)
         lin--;
         col++;
     }
-    if (aligned == N)
+    if (aligned >= N)
     {
         return 1;
     }
