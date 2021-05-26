@@ -427,10 +427,11 @@ void clear()
 int safeIntInput()
 {
     int num = 0;
-    char input[64];
+    char input[10];
 
-    fgets(input, 63, stdin);
-
+    fgets(input, 10, stdin);
+    fflush(stdin);
+    
     if (sscanf(input, "%d", &num) != 1)
     {
         return -__INT_MAX__;

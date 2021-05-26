@@ -1,6 +1,6 @@
 /**
  * @file main.c
- * @author your name (you@domain.com)
+ * @author Edgar Boule (edgar.boule@utbm.fr), Thibaut Lemaître (thibaut.lemaitre@utbm.fr), Matis Ressicaud (matis.ressicaud@utbm.fr)
  * @brief 
  * @version 0.1
  * @date 2021-05-05
