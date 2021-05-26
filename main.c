@@ -45,6 +45,7 @@ int main(int argc, char *argv[])
         {
             clear();
             showGrid(gameBoard);
+            
             game(gameBoard, token, toAlign, playerNum, player);
         }
         break;
@@ -57,7 +58,7 @@ int main(int argc, char *argv[])
         break;
     }
 
-    freeMemory(gameBoard, toAlign, player, playerNum);
+    freeMemory(gameBoard, token, toAlign, player, playerNum);
 
     return EXIT_SUCCESS;
 }

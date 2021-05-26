@@ -14,13 +14,17 @@ int startGame(int *nbPlayer)
         startChoice = safeIntInput();
     }
     clear();
-    printf(GRN "Choix du nombre de joueurs\n" RST "1. Partie solo contre l'ordinateur\n2. Partie à deux joueurs\nQuel est votre choix ? ");
-    *nbPlayer = safeIntInput();
-    while (*nbPlayer < 1 || *nbPlayer > 2)
+
+    if (startChoice != 3)
     {
-        clear();
-        printf(RED "Entrée incorrecte, veuillez recommencer\n" RST "Choix du nombre de joueurs\n1. Partie solo contre l'ordinateur\n2. Partie à deux joueurs\nQuel est votre choix ? ");
+        printf(GRN "Choix du nombre de joueurs\n" RST "1. Partie solo contre l'ordinateur\n2. Partie à deux joueurs\nQuel est votre choix ? ");
         *nbPlayer = safeIntInput();
+        while (*nbPlayer < 1 || *nbPlayer > 2)
+        {
+            clear();
+            printf(RED "Entrée incorrecte, veuillez recommencer\n" RST "Choix du nombre de joueurs\n1. Partie solo contre l'ordinateur\n2. Partie à deux joueurs\nQuel est votre choix ? ");
+            *nbPlayer = safeIntInput();
+        }
     }
     return startChoice;
 }
@@ -169,7 +173,7 @@ void game(gridClass *gameBoard, tokenClass *token, int *toAlign, int *nbPlayers,
     }
 }
 
-void freeMemory(gridClass *grid, int *num, int *num2, int *num3)
+void freeMemory(gridClass *grid, tokenClass *token, int *num, int *num2, int *num3)
 {
     for (int i = 0; i < grid->col; i++)
     {
@@ -181,6 +185,9 @@ void freeMemory(gridClass *grid, int *num, int *num2, int *num3)
     grid->grille = NULL;
     free(grid);
     grid = NULL;
+
+    free(token);
+    token = NULL;
 
     free(num);
     num = NULL;
@@ -480,7 +487,8 @@ int loadFromFile(gridClass *grid, int *player, int *align)
             for (int j = 0; j < *align + 2; j++)
             {
                 grid->grille[i][j] = line[j]; //Gets the individual character for the specified coordinates in the grid and stores it
-                if(grid->grille[i][j] == 'X' || grid->grille[i][j] == 'O'){
+                if (grid->grille[i][j] == 'X' || grid->grille[i][j] == 'O')
+                {
                     grid->tokenNumber++;
                 }
             }

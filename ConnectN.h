@@ -63,7 +63,10 @@ void showGrid(gridClass *grid);
  * @brief 
  * 
  * @param gameBoard 
+ * @param token 
+ * @param toAlign 
  * @param nbPlayers 
+ * @param player 
  */
 void game(gridClass *gameBoard, tokenClass *token, int *toAlign, int *nbPlayers, int *player);
 
@@ -71,11 +74,12 @@ void game(gridClass *gameBoard, tokenClass *token, int *toAlign, int *nbPlayers,
  * @brief 
  * 
  * @param grid 
+ * @param token 
  * @param num 
  * @param num2 
  * @param num3 
  */
-void freeMemory(gridClass *grid, int *num, int *num2, int *num3);
+void freeMemory(gridClass *grid, tokenClass* token, int *num, int *num2, int *num3);
 
 /**
  * @brief 
