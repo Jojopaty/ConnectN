@@ -17,21 +17,22 @@ int main(int argc, char *argv[])
 
     gridClass *gameBoard = malloc(sizeof(gridClass));
     tokenClass *token = malloc(sizeof(tokenClass));
-    int *player = malloc(sizeof(int)); // pointer on int
+    int *player = malloc(sizeof(int));    // pointer on int
+    int *playerNum = malloc(sizeof(int)); //Pointer on int
     int column;
     int hasPlayed = 0;
     int hasWon = -1;
     int quit = 0;
     int draw = 0;
     int removedColumn = 0;
-    int *toAlign = malloc(sizeof(int)); // pointer on int
+    int *toAlign = malloc(sizeof(int)); // Pointer on int
 
-    switch (startGame())
+    switch (startGame(playerNum))
     {
     case 1:
         clear();
         printf(BWHT BLK "Démarrage de la nouvelle partie...\n" RST);
-        createAndInitializeGrid(gameBoard, toAlign);
+        gameBoard = createAndInitializeGrid(gameBoard, toAlign);
         clear();
         showGrid(gameBoard);
         *player = rand() % 2 + 1;
@@ -127,7 +128,7 @@ int main(int argc, char *argv[])
         break;
     }
 
-    freeMemory(gameBoard, toAlign, player);
+    freeMemory(gameBoard, toAlign, player, playerNum);
 
     return EXIT_SUCCESS;
 }

@@ -1,6 +1,6 @@
 #include <ConnectN.h>
 
-int startGame()
+int startGame(int *nbPlayer)
 {
     clear();
     int startChoice;
@@ -12,6 +12,15 @@ int startGame()
         clear();
         printf(RED "Entrée incorrecte, veuillez recommencer" RST "\n1. Nouvelle partie\n2. Continuer la dernière partie\n3. Quitter\nQuel est votre choix ? ");
         startChoice = safeIntInput();
+    }
+    clear();
+    printf("Choix du nombre de joueurs\n1. Partie solo contre l'ordinateur\n2. Partie à deux joueurs\nQuel est votre choix ? ");
+    *nbPlayer = safeIntInput();
+    while (*nbPlayer < 1 || *nbPlayer > 2)
+    {
+        clear();
+        printf(RED "Entrée incorrecte, veuillez recommencer\n" RST "Choix du nombre de joueurs\n1. Partie solo contre l'ordinateur\n2. Partie à deux joueurs\nQuel est votre choix ? ");
+        *nbPlayer = safeIntInput();
     }
     return startChoice;
 }
@@ -81,7 +90,7 @@ void showGrid(gridClass *grid)
     }
 }
 
-void freeMemory(gridClass *grid, int *num, int *num2)
+void freeMemory(gridClass *grid, int *num, int *num2, int *num3)
 {
     for (int i = 0; i < grid->col; i++)
     {
@@ -98,6 +107,8 @@ void freeMemory(gridClass *grid, int *num, int *num2)
     num = NULL;
     free(num2);
     num2 = NULL;
+    free(num3);
+    num3 = NULL;
 }
 
 int moveChoice(int num)
@@ -417,6 +428,7 @@ int safeIntInput()
 {
     int num = 0;
     char input[64];
+
     fgets(input, 63, stdin);
 
     if (sscanf(input, "%d", &num) != 1)

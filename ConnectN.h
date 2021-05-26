@@ -24,7 +24,7 @@ typedef struct
  * 
  * @return int The choice of the user. 1 for "New Game", 2 for "Continue last saved game" and 3 for "Quit".
  */
-int startGame();
+int startGame(int *nbPlayer);
 
 /**
  * @brief Create a And Initialize Grid object
@@ -64,8 +64,10 @@ void showGrid(gridClass *grid);
  * 
  * @param grid 
  * @param num 
+ * @param num2 
+ * @param num3 
  */
-void freeMemory(gridClass *grid, int *num, int *num2);
+void freeMemory(gridClass *grid, int *num, int *num2, int *num3);
 
 /**
  * @brief 
