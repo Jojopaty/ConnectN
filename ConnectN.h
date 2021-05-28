@@ -73,6 +73,21 @@ void game(gridClass *gameBoard, tokenClass *token, int *toAlign, int *nbPlayers,
 /**
  * @brief 
  * 
+ * @return int 
+ */
+int aiAddOrRemove();
+
+/**
+ * @brief 
+ * 
+ * @param grid 
+ * @return int 
+ */
+int aiSelectColumn(gridClass *grid);
+
+/**
+ * @brief 
+ * 
  * @param grid 
  * @param token 
  * @param num 

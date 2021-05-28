@@ -104,45 +104,64 @@ void game(gridClass *gameBoard, tokenClass *token, int *toAlign, int *nbPlayers,
     int removedColumn = 0;
     while (hasWon < 0 && quit < 1 && draw < 1)
     {
-        printf("\nJoueur %d\n", *player);
+
         token->type = ((*player == 1) ? 'O' : 'X');
-        hasPlayed = 0;
-        do
+
+        if (*nbPlayers > 1)
         {
-            switch (moveChoice(gameBoard->tokenNumber))
+            printf("\nJoueur %d\n", *player);
+            hasPlayed = 0;
+            do
+            {
+                switch (moveChoice(gameBoard->tokenNumber))
+                {
+                case 1:
+
+                    printf("\nAjouter un jeton dans quelle colonne ? ");
+                    column = safeIntInput();
+                    if (column != removedColumn)
+                    {
+                        hasPlayed = addToken(gameBoard, column, token);
+                        removedColumn = 0;
+                    }
+                    else
+                    {
+                        hasPlayed = 0;
+                        printf(RED "Vous ne pouvez pas insérer de jeton dans cette colonne. Un jeton vient d'y être retiré." RST);
+                    }
+                    break;
+                case 2:
+
+                    printf("\nRetirer un jeton dans quelle colonne ? ");
+                    column = safeIntInput();
+                    hasPlayed = removeToken(gameBoard, column);
+                    removedColumn = (hasPlayed > 0) ? column : 0;
+                    break;
+                case 3:
+                    saveToFile(gameBoard, (*player == 1) ? 2 : 1);
+                    quit = 1;
+                    break;
+                default:
+                    break;
+                }
+
+            } while (quit != 1 && hasPlayed != 1 && draw != 1);
+        }
+        else
+        {
+            printf("\nL'ordinateur joue\n");
+            switch (aiAddOrRemove())
             {
             case 1:
-
-                printf("\nAjouter un jeton dans quelle colonne ? ");
-                column = safeIntInput();
-                if (column != removedColumn)
-                {
-                    hasPlayed = addToken(gameBoard, column, token);
-                    removedColumn = 0;
-                }
-                else
-                {
-                    hasPlayed = 0;
-                    printf(RED "Vous ne pouvez pas insérer de jeton dans cette colonne. Un jeton vient d'y être retiré." RST);
-                }
+                addToken(gameBoard, aiSelectColumn(gameBoard), token);
                 break;
             case 2:
-
-                printf("\nRetirer un jeton dans quelle colonne ? ");
-                column = safeIntInput();
-                hasPlayed = removeToken(gameBoard, column);
-                removedColumn = (hasPlayed > 0) ? column : 0;
-                break;
-            case 3:
-                saveToFile(gameBoard, (*player == 1) ? 2 : 1);
-                quit = 1;
+                removeToken(gameBoard, aiSelectColumn(gameBoard));
                 break;
             default:
                 break;
             }
-
-        } while (quit != 1 && hasPlayed != 1 && draw != 1);
-
+        }
         if (quit < 1)
         {
             clear();
@@ -164,6 +183,25 @@ void game(gridClass *gameBoard, tokenClass *token, int *toAlign, int *nbPlayers,
             printf(GRN "\nLa partie a été enregistrée. Pour la continuer, sélectionnez 'Continuer la dernière partie' au prochain démarrage du jeu.\n" CYN "A bientôt !\n" RST);
         }
     }
+}
+
+int aiAddOrRemove()
+{
+    int choice = rand() % 100;
+    if (choice > 10)
+    {
+        return 1;
+    }
+    else
+    {
+        return 2;
+    }
+}
+
+int aiSelectColumn(gridClass *grid)
+{
+    int choice = rand() % grid->col + 1;
+    return choice;
 }
 
 int checkDraw(gridClass *grid)
