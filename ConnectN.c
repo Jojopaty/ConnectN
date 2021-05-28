@@ -96,7 +96,7 @@ void showGrid(gridClass *grid)
 
 void game(gridClass *gameBoard, tokenClass *token, int *toAlign, int *nbPlayers, int *player)
 {
-    int column;
+    int column = 0;
     int hasPlayed = 0;
     int hasWon = -1;
     int quit = 0;

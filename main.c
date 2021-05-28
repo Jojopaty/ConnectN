@@ -18,10 +18,10 @@ int main(int argc, char *argv[])
     gridClass *gameBoard = malloc(sizeof(gridClass));   // Pointer on gridClass
     tokenClass *token = malloc(sizeof(tokenClass));     // Pointer on tokenClass
     int *player = malloc(sizeof(int));      // Pointer on int
-    int *playerNum = malloc(sizeof(int));   // Pointer on int
+    int *nbPlayers = malloc(sizeof(int));   // Pointer on int
     int *toAlign = malloc(sizeof(int));     // Pointer on int
 
-    switch (startGame(playerNum))
+    switch (startGame(nbPlayers))
     {
     case 1:
         clear();
@@ -31,7 +31,7 @@ int main(int argc, char *argv[])
         showGrid(gameBoard);
         *player = rand() % 2 + 1;
 
-        game(gameBoard, token, toAlign, playerNum, player);
+        game(gameBoard, token, toAlign, nbPlayers, player);
 
         break;
     case 2:
@@ -46,7 +46,7 @@ int main(int argc, char *argv[])
             clear();
             showGrid(gameBoard);
             
-            game(gameBoard, token, toAlign, playerNum, player);
+            game(gameBoard, token, toAlign, nbPlayers, player);
         }
         break;
     case 3:
@@ -58,7 +58,7 @@ int main(int argc, char *argv[])
         break;
     }
 
-    freeMemory(gameBoard, token, toAlign, player, playerNum);
+    freeMemory(gameBoard, token, toAlign, player, nbPlayers);
 
     return EXIT_SUCCESS;
 }
