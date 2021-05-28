@@ -106,11 +106,12 @@ void game(gridClass *gameBoard, tokenClass *token, int *toAlign, int *nbPlayers,
     {
 
         token->type = ((*player == 1) ? 'O' : 'X');
+        hasPlayed = 0;
 
-        if (*nbPlayers > 1)
+        if (*nbPlayers > 1 || *player == 1)
         {
             printf("\nJoueur %d\n", *player);
-            hasPlayed = 0;
+
             do
             {
                 switch (moveChoice(gameBoard->tokenNumber))
@@ -134,7 +135,7 @@ void game(gridClass *gameBoard, tokenClass *token, int *toAlign, int *nbPlayers,
 
                     printf("\nRetirer un jeton dans quelle colonne ? ");
                     column = safeIntInput();
-                    hasPlayed = removeToken(gameBoard, column);
+                    hasPlayed = removeToken(gameBoard, token, column);
                     removedColumn = (hasPlayed > 0) ? column : 0;
                     break;
                 case 3:
@@ -145,32 +146,56 @@ void game(gridClass *gameBoard, tokenClass *token, int *toAlign, int *nbPlayers,
                     break;
                 }
 
-            } while (quit != 1 && hasPlayed != 1 && draw != 1);
+            } while (quit != 1 && hasPlayed != 1);
         }
         else
         {
             printf("\nL'ordinateur joue\n");
+
             switch (aiAddOrRemove())
             {
             case 1:
-                addToken(gameBoard, aiSelectColumn(gameBoard), token);
+                do
+                {
+                    column = aiSelectColumn(gameBoard);
+                    hasPlayed = addToken(gameBoard, column, token);
+                } while (hasPlayed != 1);
+                printf(GRN "L'ordinateur a ajouté un jeton dans la colonne %d\n" RST, column);
                 break;
             case 2:
-                removeToken(gameBoard, aiSelectColumn(gameBoard));
+                do
+                {
+                    column = aiSelectColumn(gameBoard);
+                    hasPlayed = removeToken(gameBoard, token, column);
+                } while (hasPlayed != 1);
+                printf(GRN "L'ordinateur a retiré un jeton de la colonne %d\n" RST, column);
                 break;
             default:
                 break;
             }
+            delay(1500);
         }
         if (quit < 1)
         {
             clear();
             showGrid(gameBoard);
+            for (int i = 0; i < (4 * column - 2); i++)
+            {
+                printf(" ");
+            }
+            (*player == 1) ? printf(YEL "%c\n" RST, token->lastMove) : printf(RED "%c\n" RST, token->lastMove);
             hasWon = checkWinner(gameBoard, toAlign, token);
             draw = checkDraw(gameBoard);
             if (hasWon > -1)
             {
-                printf(CYN "Le joueur %d a gagné. Félicitations !\n" RST, *player);
+                if (*nbPlayers > 1 || *player == 1)
+                {
+                    printf(CYN "Le joueur %d a gagné. Félicitations !\n" RST, *player);
+                }
+                else
+                {
+                    printf(CYN "L'ordinateur a gagné !\n" RST);
+                }
             }
             else if (draw > 0)
             {
@@ -188,7 +213,7 @@ void game(gridClass *gameBoard, tokenClass *token, int *toAlign, int *nbPlayers,
 int aiAddOrRemove()
 {
     int choice = rand() % 100;
-    if (choice > 10)
+    if (choice > 5)
     {
         return 1;
     }
@@ -302,12 +327,13 @@ int addToken(gridClass *grid, int col, tokenClass *token)
             grid->tokenNumber++;
             token->posLin = line - 1;
             token->posCol = col - 1;
+            token->lastMove = '+';
             return 1;
         }
     }
 }
 
-int removeToken(gridClass *grid, int col)
+int removeToken(gridClass *grid, tokenClass *token, int col)
 {
     int line = 0;
 
@@ -331,6 +357,7 @@ int removeToken(gridClass *grid, int col)
         {
             grid->grille[line][col - 1] = '_';
             grid->tokenNumber--;
+            token->lastMove = '-';
             return 1;
         }
     }
@@ -564,4 +591,15 @@ int safeIntInput()
         return -__INT_MAX__;
     }
     return num;
+}
+
+void delay(int milliseconds)
+{
+    long pause;
+    clock_t now, then;
+
+    pause = milliseconds * (CLOCKS_PER_SEC / 1000);
+    now = then = clock();
+    while ((now - then) < pause)
+        now = clock();
 }

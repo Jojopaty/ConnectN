@@ -17,6 +17,7 @@ typedef struct
     int posLin;
     int posCol;
     char type;
+    char lastMove;
 } tokenClass;
 
 /**
@@ -118,10 +119,11 @@ int addToken(gridClass *grid, int col, tokenClass *token);
  * @brief 
  * 
  * @param grid 
+ * @param token 
  * @param col 
  * @return int 
  */
-int removeToken(gridClass *grid, int col);
+int removeToken(gridClass *grid, tokenClass* token, int col);
 
 int checkDraw(gridClass* grid);
 
@@ -203,3 +205,10 @@ void clear();
  * @return int The desired integer or -INT_MAX if not valid
  */
 int safeIntInput();
+
+/**
+ * @brief 
+ * 
+ * @param milliseconds 
+ */
+void delay(int milliseconds);
