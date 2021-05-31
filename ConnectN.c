@@ -104,7 +104,6 @@ void game(gridClass *gameBoard, tokenClass *token, int *toAlign, int *nbPlayers,
     int removedColumn = 0;
     while (hasWon < 0 && quit < 1 && draw < 1)
     {
-
         token->type = ((*player == 1) ? 'O' : 'X');
         hasPlayed = 0;
 

@@ -1,8 +1,9 @@
-Next player :   	1
-Tokens to align :	3
+Next player :   	2
+Tokens to align :	4
 GameBoard :
-_____
-_____
-_____
-_____
-X_O__
+______
+______
+______
+_X____
+_O_O__
+OX_X__
