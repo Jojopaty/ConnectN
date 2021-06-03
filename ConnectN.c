@@ -421,6 +421,7 @@ int checkHoriz(gridClass *grid, int N, tokenClass *token)
             aligned = 0;
         }
     }
+    
     if (aligned >= N)
     {
         return 1;
@@ -585,7 +586,7 @@ int safeIntInput()
     fgets(input, 10, stdin);
     fflush(stdin);
 
-    if (sscanf(input, "%d", &num) != 1)
+    if (sscanf(input, "%d", &num) != 1 || num != strtof(input, NULL))
     {
         return -__INT_MAX__;
     }
