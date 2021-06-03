@@ -10,6 +10,7 @@
  */
 
 #include <ConnectN.h>
+#include <negamaxAI.h>
 
 int main(int argc, char *argv[])
 {
