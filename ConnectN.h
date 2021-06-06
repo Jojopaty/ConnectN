@@ -3,7 +3,8 @@
 #include <string.h>
 #include <time.h>
 #include <colors.h>
-
+#include <ncurses.h>
+#include <locale.h>
 
 
 typedef struct

@@ -3,6 +3,7 @@
 #include <stdio.h>
 #include <locale.h>
 #include <time.h>
+// #include <ConnectN.h>
 
 #define KEY_ENTER 0x0A // BugFix from ncurses library
 
@@ -161,7 +162,7 @@ int main()
     }
     else
     {
-        printw("La taille de la fenêtre est trop petite, impossible de lancer le programe.\nCe programme necessite une taille minimale de 40 lignes et 130 colonnes pour fonctionner correctement.\nLa taille actuelle est : %d lignes et %d colonnes.\n\nAppuyez sur une touche pour quitter.", yMax, xMax);
+        printw("La taille de la fenêtre est trop petite, impossible de lancer le programe.\nCe programme necessite une taille minimale de 40 lignes et 130 colonnes pour fonctionner correctement.\nLa taille actuelle est : %d lignes et %d colonnes.\nPour jouer sans interface graphique, lancez le programme avec la commande : \"./ConnectN.exe -nogui\"\n\nYour window size is too small for the game to properly function.\nThis game needs a window size of at least 40 lines by 130 columns.\nThe current window size is %d lines and %d columns.\nIf you don't want to play with GUI, lanuch the game with \"./ConnectN.exe -nogui\"\n\nAppuyez sur une touche pour continuer.\nPress any key to continue", yMax, xMax, yMax, xMax);
         getch();
         endwin();
     }
