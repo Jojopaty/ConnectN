@@ -34,8 +34,16 @@ int main()
 
         char players[2][45];
 
-        WINDOW *gameWin, *menuWin, *shadowMenuWin, *input;
-        WINDOW *gameBoradWin, *playerWin, *timeWin, *playerNamesWin, *playerNamesWinShadow;
+        WINDOW *gameWin;
+        WINDOW *menuWin;
+        WINDOW *shadowMenuWin;
+        WINDOW *input;
+        WINDOW *gameBoradWin;
+        WINDOW *playerWin;
+        WINDOW *timeWin;
+        WINDOW *playerNamesWin;
+        WINDOW *playerNamesWinShadow;
+
         shadowMenuWin = newwin(15, 40, 15, (xMax / 2) - 19);
         menuWin = newwin(15, 40, 14, (xMax / 2) - 20);
 
@@ -69,7 +77,7 @@ int main()
         box(menuWin, 0, 0);
         mvwprintw(menuWin, 0, 9, " What is your choice? ");
         char items[3][25] = {{"New game"}, {"Continue last saved game"}, {"Quit"}};
-        char item[25];
+        char currentItem[25];
         for (int i = 0; i < 3; i++)
         {
             mvwprintw(menuWin, 2 * i + 4, 3, "%s", items[i]);
@@ -81,14 +89,14 @@ int main()
         keypad(menuWin, TRUE);
 
         wattron(menuWin, COLOR_PAIR(3));
-        sprintf(item, "%-25s", items[choice]);
-        mvwprintw(menuWin, 2 * choice + 4, 3, "%s", item);
+        sprintf(currentItem, "%-25s", items[choice]);
+        mvwprintw(menuWin, 2 * choice + 4, 3, "%s", currentItem);
         wattroff(menuWin, COLOR_PAIR(3));
 
         while ((curr = wgetch(menuWin)) != KEY_ENTER)
         {
-            sprintf(item, "%-25s", items[choice]);
-            mvwprintw(menuWin, 2 * choice + 4, 3, "%s", item);
+            sprintf(currentItem, "%-25s", items[choice]);
+            mvwprintw(menuWin, 2 * choice + 4, 3, "%s", currentItem);
 
             switch (curr)
             {
@@ -105,14 +113,49 @@ int main()
                 break;
             }
             wattron(menuWin, COLOR_PAIR(3));
-            sprintf(item, "%-25s", items[choice]);
-            mvwprintw(menuWin, 2 * choice + 4, 3, "%s", item);
+            sprintf(currentItem, "%-25s", items[choice]);
+            mvwprintw(menuWin, 2 * choice + 4, 3, "%s", currentItem);
             wattroff(menuWin, COLOR_PAIR(3));
         }
 
         switch (choice)
         {
         case 0:
+            werase(menuWin);
+            box(menuWin, 0, 0);
+            mvwprintw(menuWin, 0, 15, " Players ");
+            mvwprintw(menuWin, 4, 3, "How many players are there ?");
+
+            wattron(menuWin, COLOR_PAIR(3));
+            choice = 1;
+            mvwprintw(menuWin, 7, 3+(choice * 3), "%d", choice);
+            wattroff(menuWin, COLOR_PAIR(3));
+
+            while ((curr = wgetch(menuWin)) != KEY_ENTER)
+            {
+                mvwprintw(menuWin, 7, 3+(choice * 3), "%d", choice);
+
+                switch (curr)
+                {
+                case KEY_RIGHT:
+                    choice--;
+                    choice = (choice < 1) ? 2 : choice;
+                    break;
+
+                case KEY_LEFT:
+                    choice++;
+                    choice = (choice > 2) ? 1 : choice;
+                    break;
+                default:
+                    break;
+                }
+                wattron(menuWin, COLOR_PAIR(3));
+                mvwprintw(menuWin, 7, 3+(choice * 3), "%d", choice);
+                wattroff(menuWin, COLOR_PAIR(3));
+            }
+
+            wrefresh(menuWin);
+            // getch();
 
             clear();
             playerNamesWin = newwin(7, 50, 14, (xMax / 2) - 25);
