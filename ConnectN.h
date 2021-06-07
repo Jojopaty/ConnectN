@@ -197,8 +197,7 @@ void saveToFile(gridClass *grid, int player);
 int loadFromFile(gridClass *grid, int *player, int *align);
 
 /**
- * @brief Functions that clears the co
- * mmand prompt supporting both Windows and Linux OS.
+ * @brief Functions that clears the command prompt supporting both Windows and Linux OS.
  * 
  */
 void clear();
