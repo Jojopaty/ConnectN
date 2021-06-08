@@ -2,18 +2,18 @@
 
 int startGame(int *nbPlayer)
 {
-    clear();
+    consoleClear();
     int startChoice;
     printf(GRN "Bievenue dans le jeu du Puissance N" RST "\n1. Nouvelle partie\n2. Continuer la dernière partie\n3. Quitter\nQuel est votre choix ? ");
     startChoice = safeIntInput();
 
     while (startChoice < 1 || startChoice > 3)
     {
-        clear();
+        consoleClear();
         printf(RED "Entrée incorrecte, veuillez recommencer" RST "\n1. Nouvelle partie\n2. Continuer la dernière partie\n3. Quitter\nQuel est votre choix ? ");
         startChoice = safeIntInput();
     }
-    clear();
+    consoleClear();
 
     if (startChoice != 3)
     {
@@ -21,7 +21,7 @@ int startGame(int *nbPlayer)
         *nbPlayer = safeIntInput();
         while (*nbPlayer < 1 || *nbPlayer > 2)
         {
-            clear();
+            consoleClear();
             printf(RED "Entrée incorrecte, veuillez recommencer\n" RST "Choix du nombre de joueurs\n1. Partie solo contre l'ordinateur\n2. Partie à deux joueurs\nQuel est votre choix ? ");
             *nbPlayer = safeIntInput();
         }
@@ -176,7 +176,7 @@ void game(gridClass *gameBoard, tokenClass *token, int *toAlign, int *nbPlayers,
         }
         if (quit < 1)
         {
-            clear();
+            consoleClear();
             showGrid(gameBoard);
             for (int i = 0; i < (4 * column - 2); i++)
             {
@@ -567,7 +567,7 @@ int loadFromFile(gridClass *grid, int *player, int *align)
     }
 }
 
-void clear()
+void consoleClear()
 {
 #if defined(_WIN64) || defined(_WIN32)
     system("cls");
