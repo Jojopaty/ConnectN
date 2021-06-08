@@ -10,7 +10,7 @@
  */
 
 #include <ConnectN.h>
-#include <negamaxAI.h>
+// #include <negamaxAI.h>
 
 int main(int argc, char *argv[])
 {
@@ -25,10 +25,10 @@ int main(int argc, char *argv[])
     switch (startGame(nbPlayers))
     {
     case 1:
-        clear();
+        consoleClear();
         printf(BWHT BLK "Démarrage de la nouvelle partie...\n" RST);
         gameBoard = createAndInitializeGrid(gameBoard, toAlign);
-        clear();
+        consoleClear();
         showGrid(gameBoard);
         *player = rand() % 2 + 1;
 
@@ -44,7 +44,7 @@ int main(int argc, char *argv[])
         }
         else
         {
-            clear();
+            consoleClear();
             showGrid(gameBoard);
             
             game(gameBoard, token, toAlign, nbPlayers, player);
