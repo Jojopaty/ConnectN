@@ -25,7 +25,7 @@ int main()
     curs_set(0);
     int yMax, xMax;
 
-    int nbPlayers=0;
+    int nbPlayers = 0;
 
     getmaxyx(stdscr, yMax, xMax);
 
@@ -94,13 +94,13 @@ int main()
         keypad(menuWin, TRUE);
 
         wattron(menuWin, COLOR_PAIR(3));
-        sprintf(currentItem, "%-25s", items[choice]);
+        sprintf(currentItem, "%-24s", items[choice]);
         mvwprintw(menuWin, 2 * choice + 4, 3, "%s", currentItem);
         wattroff(menuWin, COLOR_PAIR(3));
 
         while ((curr = wgetch(menuWin)) != KEY_ENTER)
         {
-            sprintf(currentItem, "%-25s", items[choice]);
+            sprintf(currentItem, "%-24s", items[choice]);
             mvwprintw(menuWin, 2 * choice + 4, 3, "%s", currentItem);
 
             switch (curr)
@@ -118,7 +118,7 @@ int main()
                 break;
             }
             wattron(menuWin, COLOR_PAIR(3));
-            sprintf(currentItem, "%-25s", items[choice]);
+            sprintf(currentItem, "%-24s", items[choice]);
             mvwprintw(menuWin, 2 * choice + 4, 3, "%s", currentItem);
             wattroff(menuWin, COLOR_PAIR(3));
         }
@@ -191,7 +191,6 @@ int main()
                 wgetnstr(input, players[i], 44);
                 werase(input);
             }
-
 
             getch();
             endwin();
