@@ -12,7 +12,7 @@
 #include <ConnectN.h>
 // #include <negamaxAI.h>
 
-int main(int argc, char *argv[])
+int main(int argc, char **argv)
 {
     srand(time(NULL));
 
@@ -21,7 +21,8 @@ int main(int argc, char *argv[])
     int *player = malloc(sizeof(int));                // Pointer on int
     int *nbPlayers = malloc(sizeof(int));             // Pointer on int
     int *toAlign = malloc(sizeof(int));               // Pointer on int
-    if (strcasecmp(argv[0], "-nogui") != 0)
+    
+    if (argc == 2 && strcasecmp(argv[1], "-nogui") == 0)
     {
         switch (startGame(nbPlayers))
         {

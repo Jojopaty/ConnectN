@@ -200,7 +200,7 @@ int loadFromFile(gridClass *grid, int *player, int *align);
  * @brief Functions that clears the command prompt supporting both Windows and Linux OS.
  * 
  */
-void clear();
+void consoleClear();
 
 /**
  * @brief Funtion that checks the input of an integer

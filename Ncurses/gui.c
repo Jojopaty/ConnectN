@@ -3,7 +3,7 @@
 #include <stdio.h>
 #include <locale.h>
 #include <time.h>
-#include "../ConnectN.h"
+#include <ConnectN.h>
 
 #define KEY_ENTER 0x0A // BugFix from ncurses library
 
