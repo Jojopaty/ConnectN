@@ -16,49 +16,53 @@ int main(int argc, char *argv[])
 {
     srand(time(NULL));
 
-    gridClass *gameBoard = malloc(sizeof(gridClass));   // Pointer on gridClass
-    tokenClass *token = malloc(sizeof(tokenClass));     // Pointer on tokenClass
-    int *player = malloc(sizeof(int));      // Pointer on int
-    int *nbPlayers = malloc(sizeof(int));   // Pointer on int
-    int *toAlign = malloc(sizeof(int));     // Pointer on int
-
-    switch (startGame(nbPlayers))
+    gridClass *gameBoard = malloc(sizeof(gridClass)); // Pointer on gridClass
+    tokenClass *token = malloc(sizeof(tokenClass));   // Pointer on tokenClass
+    int *player = malloc(sizeof(int));                // Pointer on int
+    int *nbPlayers = malloc(sizeof(int));             // Pointer on int
+    int *toAlign = malloc(sizeof(int));               // Pointer on int
+    if (strcasecmp(argv[0], "-nogui") != 0)
     {
-    case 1:
-        consoleClear();
-        printf(BWHT BLK "Démarrage de la nouvelle partie...\n" RST);
-        gameBoard = createAndInitializeGrid(gameBoard, toAlign);
-        consoleClear();
-        showGrid(gameBoard);
-        *player = rand() % 2 + 1;
-
-        game(gameBoard, token, toAlign, nbPlayers, player);
-
-        break;
-    case 2:
-        printf(BLU "Loading last saved game\n" RST);
-        if (loadFromFile(gameBoard, player, toAlign) == -1)
+        switch (startGame(nbPlayers))
         {
-            printf(RED "Une erreur est survenue lors de la lecture du fichier. Celui-ci est peut-être inexistant ou corrompu.\n" RST);
-            return EXIT_FAILURE;
-        }
-        else
-        {
+        case 1:
+            consoleClear();
+            printf(BWHT BLK "Démarrage de la nouvelle partie...\n" RST);
+            gameBoard = createAndInitializeGrid(gameBoard, toAlign);
             consoleClear();
             showGrid(gameBoard);
-            
-            game(gameBoard, token, toAlign, nbPlayers, player);
-        }
-        break;
-    case 3:
-        printf(BLU "Bye\n" RST);
-        return EXIT_SUCCESS;
-        break;
-    default:
-        // Should never be executed
-        break;
-    }
+            *player = rand() % 2 + 1;
 
+            game(gameBoard, token, toAlign, nbPlayers, player);
+
+            break;
+        case 2:
+            printf(BLU "Loading last saved game\n" RST);
+            if (loadFromFile(gameBoard, player, toAlign) == -1)
+            {
+                printf(RED "Une erreur est survenue lors de la lecture du fichier. Celui-ci est peut-être inexistant ou corrompu.\n" RST);
+                return EXIT_FAILURE;
+            }
+            else
+            {
+                consoleClear();
+                showGrid(gameBoard);
+
+                game(gameBoard, token, toAlign, nbPlayers, player);
+            }
+            break;
+        case 3:
+            printf(BLU "Bye\n" RST);
+            return EXIT_SUCCESS;
+            break;
+        default:
+            // Should never be executed
+            break;
+        }
+    }
+    else{
+        printf("Partie avec gui\n");
+    }
     freeMemory(gameBoard, token, toAlign, player, nbPlayers);
 
     return EXIT_SUCCESS;

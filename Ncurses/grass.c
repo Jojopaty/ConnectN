@@ -3,7 +3,7 @@
 #include <stdio.h>
 #include <locale.h>
 #include <time.h>
-// #include <ConnectN.h>
+#include "../ConnectN.h"
 
 #define KEY_ENTER 0x0A // BugFix from ncurses library
 
@@ -14,6 +14,9 @@ WINDOW *createShadow(WINDOW *window);
 int main()
 {
     setlocale(LC_ALL, "");
+
+    // setlocale(LC_ALL, "fr-FR");
+
     initscr();
     start_color();
     noecho();
@@ -21,6 +24,8 @@ int main()
     cbreak();
     curs_set(0);
     int yMax, xMax;
+
+    int nbPlayers=0;
 
     getmaxyx(stdscr, yMax, xMax);
 
@@ -69,7 +74,7 @@ int main()
             delay(75);
             refresh();
         }
-        mvprintw(yMax - 1, 0, "Created by Thibaut Lemaître, Matis Ressicaud and Edgar Boule - TC02");
+        mvprintw(yMax - 1, 0, "Created by Thibaut Lemaitre, Matis Ressicaud and Edgar Boule - TC02");
         refresh();
         wrefresh(shadowMenuWin);
 
@@ -126,14 +131,21 @@ int main()
             mvwprintw(menuWin, 0, 15, " Players ");
             mvwprintw(menuWin, 4, 3, "How many players are there ?");
 
+            for (int i = 1; i < 3; i++)
+            {
+                mvwprintw(menuWin, 7, 10 + (i * 5), " %d ", i);
+            }
+
             wattron(menuWin, COLOR_PAIR(3));
+            wrefresh(menuWin);
+
             choice = 1;
-            mvwprintw(menuWin, 7, 3+(choice * 3), "%d", choice);
+            mvwprintw(menuWin, 7, 10 + (choice * 5), " %d ", choice);
             wattroff(menuWin, COLOR_PAIR(3));
 
             while ((curr = wgetch(menuWin)) != KEY_ENTER)
             {
-                mvwprintw(menuWin, 7, 3+(choice * 3), "%d", choice);
+                mvwprintw(menuWin, 7, 10 + (choice * 5), " %d ", choice);
 
                 switch (curr)
                 {
@@ -150,12 +162,12 @@ int main()
                     break;
                 }
                 wattron(menuWin, COLOR_PAIR(3));
-                mvwprintw(menuWin, 7, 3+(choice * 3), "%d", choice);
+                mvwprintw(menuWin, 7, 10 + (choice * 5), " %d ", choice);
                 wattroff(menuWin, COLOR_PAIR(3));
             }
+            nbPlayers = choice;
 
             wrefresh(menuWin);
-            // getch();
 
             clear();
             playerNamesWin = newwin(7, 50, 14, (xMax / 2) - 25);
@@ -169,7 +181,7 @@ int main()
             wbkgd(input, COLOR_PAIR(2));
             echo();
             curs_set(1);
-            for (int i = 0; i < 2; i++)
+            for (int i = 0; i < nbPlayers; i++)
             {
                 mvwprintw(playerNamesWin, 2, 3, "What's the name of player %d?", i + 1);
                 wrefresh(playerNamesWin);
@@ -180,7 +192,6 @@ int main()
                 werase(input);
             }
 
-            mvprintw(1, 0, "%s \n%s", players[0], players[1]);
 
             getch();
             endwin();
