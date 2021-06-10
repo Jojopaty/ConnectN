@@ -244,6 +244,9 @@ void playerNames(WINDOW *smallWin, WINDOW *smallWinShadow, WINDOW *inputWin, int
             errorOFF(inputWin, FALSE);
         }
     }
+    if(*nbPlayers == 1){
+        players[1] = "Computer";
+    }
 }
 
 int gridSizeChoice(WINDOW *smallWin, WINDOW *smallWinShadow, WINDOW *input)
@@ -266,7 +269,7 @@ int gridSizeChoice(WINDOW *smallWin, WINDOW *smallWinShadow, WINDOW *input)
 
         strongStandoutON(smallWin);
 
-        mvwprintw(smallWin, 3, 3, "Should be between 2 and 15");
+        mvwprintw(smallWin, 3, 3, "Should be between 3 and 15");
 
         strongStandoutOFF(smallWin);
 

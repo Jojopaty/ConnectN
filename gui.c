@@ -43,11 +43,6 @@ void gui(gridClass *gameBoard, tokenClass *token, int *toAlign, int *nbPlayers, 
         WINDOW *smallWinShadow;
         WINDOW *input;
 
-        WINDOW *gameWin;
-        WINDOW *gameBoradWin;
-        WINDOW *playerWin;
-        // WINDOW *timeWin;
-
         menuWin = newwin(15, 40, 14, (xMax / 2) - 20);
         menuWinShadow = createShadow(menuWin);
 
@@ -57,6 +52,26 @@ void gui(gridClass *gameBoard, tokenClass *token, int *toAlign, int *nbPlayers, 
 
         input = newwin(1, 45, 19, (xMax / 2) - 22);
         wbkgd(input, COLOR_PAIR(2));
+
+        WINDOW *gameWinBkgdShadow;
+        WINDOW *gameWinBkgd;
+        WINDOW *gameBoradWin;
+        WINDOW *playerWin;
+        WINDOW *moveChoiceWin;
+        WINDOW *columnChoiceWin;
+
+        gameWinBkgd = newwin(33, 120, 3, (xMax / 2) - 60);
+        wbkgd(gameWinBkgd, COLOR_PAIR(2));
+        gameWinBkgdShadow = createShadow(gameWinBkgd);
+
+        gameBoradWin = newwin(17, 48, 5, (xMax / 2) - 55);
+        wbkgd(gameBoradWin, COLOR_PAIR(2));
+
+        playerWin = newwin(5, 50, 5, (xMax / 2) + 5);
+        wbkgd(playerWin, COLOR_PAIR(2));
+
+        moveChoiceWin = newwin(9, 50, 12, (xMax / 2) + 5);
+        wbkgd(moveChoiceWin, COLOR_PAIR(2));
 
         startupAnimation(yMax, xMax);
 
@@ -70,15 +85,35 @@ void gui(gridClass *gameBoard, tokenClass *token, int *toAlign, int *nbPlayers, 
 
             *toAlign = gridSizeChoice(smallWin, smallWinShadow, input);
 
+            curs_set(0);
+            noecho();
+
             gameBoard = initializeGridSize(gameBoard, toAlign);
 
-            *player = rand() % 2 + 1;
+            *player = rand() % 2;
 
             clear();
             refresh();
 
-            curs_set(0);
-            noecho();
+            wrefresh(gameWinBkgdShadow);
+            box(gameWinBkgd, 0, 0);
+            centerPrint(gameWinBkgd, 0, " Connect N ");
+            wrefresh(gameWinBkgd);
+
+            box(gameBoradWin, 0, 0);
+            centerPrint(gameBoradWin, 0, " Gameboard ");
+            wrefresh(gameBoradWin);
+
+            box(playerWin, 0, 0);
+            centerPrint(playerWin, 0, " Player ");
+            centerPrint(playerWin, 2, players[*player]);
+            wrefresh(playerWin);
+
+            box(moveChoiceWin, 0, 0);
+            centerPrint(moveChoiceWin, 0, " Action Selection ");
+            wrefresh(moveChoiceWin);
+
+
 
             getch();
             endwin();
