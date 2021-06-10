@@ -215,3 +215,22 @@ int safeIntInput();
  * @param milliseconds 
  */
 void delay(int milliseconds);
+
+/**
+ * @brief 
+ * 
+ * @param gameBoard 
+ * @param token 
+ * @param toAlign 
+ * @param nbPlayers 
+ * @param player 
+ */
+void gui(gridClass *gameBoard, tokenClass *token, int *toAlign, int *nbPlayers, int *player);
+
+/**
+ * @brief 
+ * 
+ * @param win 
+ * @return int 
+ */
+int safeIntInput_GUI(WINDOW* win);

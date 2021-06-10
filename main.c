@@ -21,7 +21,7 @@ int main(int argc, char **argv)
     int *player = malloc(sizeof(int));                // Pointer on int
     int *nbPlayers = malloc(sizeof(int));             // Pointer on int
     int *toAlign = malloc(sizeof(int));               // Pointer on int
-    
+
     if (argc == 2 && strcasecmp(argv[1], "-nogui") == 0)
     {
         switch (startGame(nbPlayers))
@@ -61,8 +61,9 @@ int main(int argc, char **argv)
             break;
         }
     }
-    else{
-        printf("Partie avec gui\n");
+    else
+    {
+        gui(gameBoard, token, toAlign, nbPlayers, player);
     }
     freeMemory(gameBoard, token, toAlign, player, nbPlayers);
 
