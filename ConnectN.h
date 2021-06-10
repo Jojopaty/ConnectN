@@ -6,7 +6,6 @@
 #include <ncurses.h>
 #include <locale.h>
 
-
 typedef struct
 {
     int lin;
@@ -22,6 +21,7 @@ typedef struct
     char type;
     char lastMove;
 } tokenClass;
+
 
 /**
  * @brief Function for the user to choose what to do when openning the game with entry check.
@@ -98,7 +98,7 @@ int aiSelectColumn(gridClass *grid);
  * @param num2 
  * @param num3 
  */
-void freeMemory(gridClass *grid, tokenClass* token, int *num, int *num2, int *num3);
+void freeMemory(gridClass *grid, tokenClass *token, int *num, int *num2, int *num3);
 
 /**
  * @brief 
@@ -126,9 +126,9 @@ int addToken(gridClass *grid, int col, tokenClass *token);
  * @param col 
  * @return int 
  */
-int removeToken(gridClass *grid, tokenClass* token, int col);
+int removeToken(gridClass *grid, tokenClass *token, int col);
 
-int checkDraw(gridClass* grid);
+int checkDraw(gridClass *grid);
 
 /**
  * @brief 
@@ -216,6 +216,8 @@ int safeIntInput();
  */
 void delay(int milliseconds);
 
+/*----------------- GUI functions -----------------*/
+
 /**
  * @brief 
  * 
@@ -233,4 +235,49 @@ void gui(gridClass *gameBoard, tokenClass *token, int *toAlign, int *nbPlayers, 
  * @param win 
  * @return int 
  */
-int safeIntInput_GUI(WINDOW* win);
+int safeIntInput_GUI(WINDOW *win);
+
+/**
+ * @brief 
+ * 
+ * @param win 
+ * @param title 
+ * @param line 
+ */
+void centerPrint(WINDOW *win, int line, char *title);
+
+/**
+ * @brief Create a Shadow object
+ * 
+ * @param window 
+ * @return WINDOW* 
+ */
+WINDOW *createShadow(WINDOW *window);
+
+/**
+ * @brief 
+ * 
+ * @param win 
+ */
+void errorON(WINDOW *win, int box);
+
+/**
+ * @brief 
+ * 
+ * @param win 
+ */
+void errorOFF(WINDOW *win, int box);
+
+void strongStandoutON(WINDOW *win);
+
+void strongStandoutOFF(WINDOW *win);
+
+void startupAnimation(int yMax, int xMax);
+
+int startupMenu(WINDOW *menuWin, WINDOW *menuWinShadow);
+
+int playerNumChoice(WINDOW *smallWin, WINDOW *smallWinShadow);
+
+void playerNames(WINDOW *smallWin, WINDOW *smallWinShadow, WINDOW *input, int xMax, int *nbPlayers, char ** players);
+
+int gridSizeChoice(WINDOW *smallWin, WINDOW *smallWinShadow, WINDOW *input);

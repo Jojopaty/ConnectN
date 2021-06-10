@@ -30,201 +30,55 @@ void gui(gridClass *gameBoard, tokenClass *token, int *toAlign, int *nbPlayers, 
 
         bkgd(COLOR_PAIR(1));
 
-        char players[2][45];
+        char **players;
+        players = (char **)malloc(2 * sizeof(char *));
+        for (int i = 0; i < 2; i++)
+        {
+            players[i] = (char *)malloc(45 * sizeof(char));
+        }
 
-        WINDOW *gameWin;
         WINDOW *menuWin;
-        WINDOW *shadowMenuWin;
-        WINDOW *input;
-        WINDOW *gameBoradWin;
-        WINDOW *playerWin;
-        WINDOW *timeWin;
+        WINDOW *menuWinShadow;
         WINDOW *smallWin;
         WINDOW *smallWinShadow;
+        WINDOW *input;
 
-        shadowMenuWin = newwin(15, 40, 15, (xMax / 2) - 19);
+        WINDOW *gameWin;
+        WINDOW *gameBoradWin;
+        WINDOW *playerWin;
+        // WINDOW *timeWin;
+
         menuWin = newwin(15, 40, 14, (xMax / 2) - 20);
+        menuWinShadow = createShadow(menuWin);
 
-        char *msg = "Welcome to the fabulous game of";
+        smallWin = newwin(7, 50, 14, (xMax / 2) - 25);
+        smallWinShadow = createShadow(smallWin);
+        wbkgd(smallWin, COLOR_PAIR(2));
 
-        for (int i = 0; i < 32; i++)
-        {
-            mvprintw(2, (xMax / 2) - 16 + i, "%c", msg[i]);
-            refresh();
-            delay(50);
-        }
-        delay(600);
-        char welcomeMsg[6][74] = {{" .o88b.  .d88b.  d8b   db d8b   db d88888b  .o88b. d888888b      d8b   db"},
-                                  {"d8P  Y8 .8P  Y8. 888o  88 888o  88 88'     d8P  Y8 `~~88~~'      888o  88"},
-                                  {"8P      88    88 88V8o 88 88V8o 88 88ooooo 8P         88         88V8o 88"},
-                                  {"8b      88    88 88 V8o88 88 V8o88 88~~~~~ 8b         88         88 V8o88"},
-                                  {"Y8b  d8 `8b  d8' 88  V888 88  V888 88.     Y8b  d8    88         88  V888"},
-                                  {" `Y88P'  `Y88P'  VP   V8P VP   V8P Y88888P  `Y88P'    YP         VP   V8P"}};
+        input = newwin(1, 45, 19, (xMax / 2) - 22);
+        wbkgd(input, COLOR_PAIR(2));
 
-        for (int i = 0; i < 6; i++)
-        {
-            mvprintw(i + 4, (xMax / 2) - 37, "%s", welcomeMsg[i]);
-            delay(75);
-            refresh();
-        }
-        mvprintw(yMax - 1, 0, "Created by Thibaut Lemaitre, Matis Ressicaud and Edgar Boule - TC02");
-        refresh();
-        wrefresh(shadowMenuWin);
+        startupAnimation(yMax, xMax);
 
-        wbkgd(menuWin, COLOR_PAIR(2));
-        box(menuWin, 0, 0);
-        mvwprintw(menuWin, 0, 9, " What is your choice? ");
-        char items[3][25] = {{"New game"}, {"Continue last saved game"}, {"Quit"}};
-        char currentItem[25];
-        for (int i = 0; i < 3; i++)
-        {
-            mvwprintw(menuWin, 2 * i + 4, 3, "%s", items[i]);
-        }
-        wrefresh(menuWin);
-
-        int choice = 0, curr = 0;
-
-        keypad(menuWin, TRUE);
-
-        wattron(menuWin, COLOR_PAIR(3));
-        sprintf(currentItem, "%-24s", items[choice]);
-        mvwprintw(menuWin, 2 * choice + 4, 3, "%s", currentItem);
-        wattroff(menuWin, COLOR_PAIR(3));
-
-        while ((curr = wgetch(menuWin)) != KEY_ENTER)
-        {
-            sprintf(currentItem, "%-24s", items[choice]);
-            mvwprintw(menuWin, 2 * choice + 4, 3, "%s", currentItem);
-
-            switch (curr)
-            {
-            case KEY_UP:
-                choice--;
-                choice = (choice < 0) ? 2 : choice;
-                break;
-
-            case KEY_DOWN:
-                choice++;
-                choice = (choice > 2) ? 0 : choice;
-                break;
-            default:
-                break;
-            }
-            wattron(menuWin, COLOR_PAIR(3));
-            sprintf(currentItem, "%-24s", items[choice]);
-            mvwprintw(menuWin, 2 * choice + 4, 3, "%s", currentItem);
-            wattroff(menuWin, COLOR_PAIR(3));
-        }
-
-        switch (choice)
+        switch (startupMenu(menuWin, menuWinShadow))
         {
         case 0:
-            werase(menuWin);
-            box(menuWin, 0, 0);
-            mvwprintw(menuWin, 0, 15, " Players ");
-            mvwprintw(menuWin, 4, 3, "How many players are there ?");
 
-            for (int i = 1; i < 3; i++)
-            {
-                mvwprintw(menuWin, 7, 10 + (i * 5), " %d ", i);
-            }
+            *nbPlayers = playerNumChoice(smallWin, smallWinShadow);
 
-            wattron(menuWin, COLOR_PAIR(3));
-            wrefresh(menuWin);
+            playerNames(smallWin, smallWinShadow, input, xMax, nbPlayers, players);
 
-            choice = 1;
-            mvwprintw(menuWin, 7, 10 + (choice * 5), " %d ", choice);
-            wattroff(menuWin, COLOR_PAIR(3));
+            *toAlign = gridSizeChoice(smallWin, smallWinShadow, input);
 
-            while ((curr = wgetch(menuWin)) != KEY_ENTER)
-            {
-                mvwprintw(menuWin, 7, 10 + (choice * 5), " %d ", choice);
+            gameBoard = initializeGridSize(gameBoard, toAlign);
 
-                switch (curr)
-                {
-                case KEY_RIGHT:
-                    choice--;
-                    choice = (choice < 1) ? 2 : choice;
-                    break;
-
-                case KEY_LEFT:
-                    choice++;
-                    choice = (choice > 2) ? 1 : choice;
-                    break;
-                default:
-                    break;
-                }
-                wattron(menuWin, COLOR_PAIR(3));
-                mvwprintw(menuWin, 7, 10 + (choice * 5), " %d ", choice);
-                wattroff(menuWin, COLOR_PAIR(3));
-            }
-            *nbPlayers = choice;
-
-            wrefresh(menuWin);
+            *player = rand() % 2 + 1;
 
             clear();
-            smallWin = newwin(7, 50, 14, (xMax / 2) - 25);
-            smallWinShadow = createShadow(smallWin);
-            wbkgd(smallWin, COLOR_PAIR(2));
-            box(smallWin, 0, 0);
             refresh();
-            wrefresh(smallWinShadow);
-            mvwprintw(smallWin, 0, 21, " Names ");
-            input = newwin(1, 45, 18, (xMax / 2) - 22);
-            wbkgd(input, COLOR_PAIR(2));
-            echo();
-            curs_set(1);
-            for (int i = 0; i < *nbPlayers; i++)
-            {
-                mvwprintw(smallWin, 2, 3, "What's the name of player %d?", i + 1);
-                wrefresh(smallWin);
-                wrefresh(input);
-                mvwprintw(input, 0, 0, "> ");
-                wrefresh(input);
-                wgetnstr(input, players[i], 44);
-                werase(input);
-            }
-
-            werase(smallWin);
-            wresize(smallWin, 8, 50);
-            smallWinShadow = createShadow(smallWin);
-            wrefresh(smallWinShadow);
-            mvwin(input, 19, (xMax / 2) - 22);
-            box(smallWin, 0, 0);
-            mvwprintw(smallWin, 0, 19, " Grid size ");
-            mvwprintw(smallWin, 2, 3, "How many tokens should be aligned to win?");
-            mvwprintw(smallWin, 3, 3, "Should be between 2 and 15");
-            mvwprintw(input, 0, 0, "> ");
-            wrefresh(smallWin);
-            wrefresh(input);
-            *toAlign = safeIntInput_GUI(input);
-
-            while (*toAlign < 2 || *toAlign > 15)
-            {
-                wbkgd(smallWin, COLOR_PAIR(3));
-                wbkgd(input, COLOR_PAIR(3));
-                werase(input);
-                werase(smallWin);
-                box(smallWin, 0, 0);
-                wattron(smallWin, COLOR_PAIR(3));
-                mvwprintw(smallWin, 0, 19, "   ERROR   ");
-                mvwprintw(smallWin, 2, 3, "How many tokens should be aligned to win?");
-                wattron(smallWin, A_UNDERLINE);
-                wattron(smallWin, A_BOLD);
-                wattron(smallWin, A_BLINK);
-                mvwprintw(smallWin, 3, 3, "Should be between 2 and 15");
-                wattroff(smallWin, A_BOLD);
-                wattroff(smallWin, A_BLINK);
-                wattroff(smallWin, A_UNDERLINE);
-                wattroff(smallWin, COLOR_PAIR(3));
-                mvwprintw(input, 0, 0, "> ");
-                wrefresh(smallWin);
-                wrefresh(input);
-                *toAlign = safeIntInput_GUI(input);
-            }
-            printw("%d", *toAlign);
 
             curs_set(0);
+            noecho();
 
             getch();
             endwin();
@@ -253,12 +107,4 @@ void gui(gridClass *gameBoard, tokenClass *token, int *toAlign, int *nbPlayers, 
         getch();
         endwin();
     }
-}
-
-WINDOW *createShadow(WINDOW *window)
-{
-    int yBeg, xBeg, yMax, xMax;
-    getbegyx(window, yBeg, xBeg);
-    getmaxyx(window, yMax, xMax);
-    return newwin(yMax, xMax, (yBeg + 1), (xBeg + 1));
 }

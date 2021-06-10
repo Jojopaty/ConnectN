@@ -41,7 +41,7 @@ gridClass *createAndInitializeGrid(gridClass *newGrid, int *align)
         input = safeIntInput();
     }
     *align = input;
-    initializeGridSize(newGrid, align);
+    newGrid = initializeGridSize(newGrid, align);
     return newGrid;
 }
 
@@ -49,7 +49,7 @@ gridClass *initializeGridSize(gridClass *grid, int *align)
 {
     grid->col = grid->lin = *align + 2;
     grid->tokenNumber = 0;
-    initializeGrid(grid);
+    grid = initializeGrid(grid);
     return grid;
 }
 
