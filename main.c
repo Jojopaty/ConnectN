@@ -9,6 +9,8 @@
  * 
  */
 
+// Ligne de compilation : gcc -Wall -g main.c ConnectN.c gui.c lib_gui.c -o main.exe -I . -lncursesw
+
 #include <ConnectN.h>
 // #include <negamaxAI.h>
 
