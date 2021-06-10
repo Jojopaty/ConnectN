@@ -184,18 +184,22 @@ void gui(gridClass *gameBoard, tokenClass *token, int *toAlign, int *nbPlayers, 
                 wgetnstr(input, players[i], 44);
                 werase(input);
             }
-            curs_set(0);
 
             werase(smallWin);
+            wresize(smallWin, 8, 50);
+            smallWinShadow = createShadow(smallWin);
+            wrefresh(smallWinShadow);
+            mvwin(input, 19, (xMax / 2) - 22);
             box(smallWin, 0, 0);
             mvwprintw(smallWin, 0, 19, " Grid size ");
             mvwprintw(smallWin, 2, 3, "How many tokens should be aligned to win?");
+            mvwprintw(smallWin, 3, 3, "Should be between 2 and 15");
             mvwprintw(input, 0, 0, "> ");
             wrefresh(smallWin);
             wrefresh(input);
             *toAlign = safeIntInput_GUI(input);
 
-            while (*toAlign < 0)
+            while (*toAlign < 2 || *toAlign > 15)
             {
                 wbkgd(smallWin, COLOR_PAIR(3));
                 wbkgd(input, COLOR_PAIR(3));
@@ -205,6 +209,13 @@ void gui(gridClass *gameBoard, tokenClass *token, int *toAlign, int *nbPlayers, 
                 wattron(smallWin, COLOR_PAIR(3));
                 mvwprintw(smallWin, 0, 19, "   ERROR   ");
                 mvwprintw(smallWin, 2, 3, "How many tokens should be aligned to win?");
+                wattron(smallWin, A_UNDERLINE);
+                wattron(smallWin, A_BOLD);
+                wattron(smallWin, A_BLINK);
+                mvwprintw(smallWin, 3, 3, "Should be between 2 and 15");
+                wattroff(smallWin, A_BOLD);
+                wattroff(smallWin, A_BLINK);
+                wattroff(smallWin, A_UNDERLINE);
                 wattroff(smallWin, COLOR_PAIR(3));
                 mvwprintw(input, 0, 0, "> ");
                 wrefresh(smallWin);
@@ -212,6 +223,8 @@ void gui(gridClass *gameBoard, tokenClass *token, int *toAlign, int *nbPlayers, 
                 *toAlign = safeIntInput_GUI(input);
             }
             printw("%d", *toAlign);
+
+            curs_set(0);
 
             getch();
             endwin();
