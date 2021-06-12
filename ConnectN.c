@@ -100,9 +100,9 @@ void game(gridClass *gameBoard, tokenClass *token, int *toAlign, int *nbPlayers,
     int hasPlayed = 0;
     int hasWon = -1;
     int quit = 0;
-    int draw = 0;
+    int tie = 0;
     int removedColumn = 0;
-    while (hasWon < 0 && quit < 1 && draw < 1)
+    while (hasWon < 0 && quit < 1 && tie < 1)
     {
         token->type = ((*player == 1) ? 'O' : 'X');
         hasPlayed = 0;
@@ -151,7 +151,7 @@ void game(gridClass *gameBoard, tokenClass *token, int *toAlign, int *nbPlayers,
         {
             printf("\nL'ordinateur joue\n");
 
-            switch (aiAddOrRemove())
+            switch (aiAddOrRemove(gameBoard))
             {
             case 1:
                 do
@@ -184,7 +184,7 @@ void game(gridClass *gameBoard, tokenClass *token, int *toAlign, int *nbPlayers,
             }
             (*player == 1) ? printf(YEL "%c\n" RST, token->lastMove) : printf(RED "%c\n" RST, token->lastMove);
             hasWon = checkWinner(gameBoard, toAlign, token);
-            draw = checkDraw(gameBoard);
+            tie = checkTie(gameBoard);
             if (hasWon > -1)
             {
                 if (*nbPlayers > 1 || *player == 1)
@@ -196,7 +196,7 @@ void game(gridClass *gameBoard, tokenClass *token, int *toAlign, int *nbPlayers,
                     printf(CYN "L'ordinateur a gagné !\n" RST);
                 }
             }
-            else if (draw > 0)
+            else if (tie > 0)
             {
                 printf(YEL "Egalité ! Toute la surface de jeu a été remplie sans qu'un joueur ne gagne.\n" RST);
             }
@@ -209,16 +209,23 @@ void game(gridClass *gameBoard, tokenClass *token, int *toAlign, int *nbPlayers,
     }
 }
 
-int aiAddOrRemove()
+int aiAddOrRemove(gridClass *grid)
 {
-    int choice = rand() % 100;
-    if (choice > 5)
+    if (grid->tokenNumber > 0)
     {
-        return 1;
+        int choice = rand() % 100;
+        if (choice > 5)
+        {
+            return 1;
+        }
+        else
+        {
+            return 2;
+        }
     }
     else
     {
-        return 2;
+        return 1;
     }
 }
 
@@ -228,7 +235,7 @@ int aiSelectColumn(gridClass *grid)
     return choice;
 }
 
-int checkDraw(gridClass *grid)
+int checkTie(gridClass *grid)
 {
     if (grid->tokenNumber == (grid->col * grid->lin))
     {
@@ -421,7 +428,7 @@ int checkHoriz(gridClass *grid, int N, tokenClass *token)
             aligned = 0;
         }
     }
-    
+
     if (aligned >= N)
     {
         return 1;

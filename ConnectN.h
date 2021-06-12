@@ -80,7 +80,7 @@ void game(gridClass *gameBoard, tokenClass *token, int *toAlign, int *nbPlayers,
  * 
  * @return int 
  */
-int aiAddOrRemove();
+int aiAddOrRemove(gridClass* grid);
 
 /**
  * @brief 
@@ -129,7 +129,7 @@ int addToken(gridClass *grid, int col, tokenClass *token);
  */
 int removeToken(gridClass *grid, tokenClass *token, int col);
 
-int checkDraw(gridClass *grid);
+int checkTie(gridClass *grid);
 
 /**
  * @brief 
@@ -230,6 +230,8 @@ void delay(int milliseconds);
  */
 void gui(gridClass *gameBoard, tokenClass *token, int *toAlign, int *nbPlayers, int *player);
 
+WINDOW *createShadow(WINDOW *window);
+
 /**
  * @brief 
  * 
@@ -285,10 +287,18 @@ int gridSizeChoice(WINDOW *smallWin, WINDOW *smallWinShadow, WINDOW *input);
 
 void showGrid_GUI(gridClass *grid, WINDOW* win);
 
-void initializeGameWin(WINDOW *gameWinBkgdShadow, WINDOW *gameWinBkgd, WINDOW *gameBoradWin, WINDOW *playerWin, WINDOW *moveChoiceWin, WINDOW *columnChoiceWin, gridClass *grid, char** players);
+void initializeGameWin(WINDOW *gameWinBkgdShadow, WINDOW *gameWinBkgd, WINDOW *gameBoradWin, WINDOW *playerWin, WINDOW *moveChoiceWin, WINDOW *columnChoiceWin, gridClass *grid, char** players, int player);
 
 void initializeMoveChoiceWin(WINDOW *moveChoiceWin);
+
+void initializePlayerWin(WINDOW *playerWin, char **players, int player);
 
 int moveChoice_GUI(WINDOW *moveChoiceWin, int tokenNumber);
 
 int selectColumn_GUI(gridClass *grid, WINDOW *columnChoiceWin, int moveChoice, int removedColumn);
+
+void game_GUI(WINDOW* smallWin, WINDOW* smallWinShadow, WINDOW *gameWinBkgd, WINDOW *playerWin, WINDOW *moveChoiceWin, WINDOW *columnChoiceWin, WINDOW *gameBoardWin, gridClass *gameBoard, tokenClass *token, int *player, int *nbPlayers, int *toAlign, char **players);
+
+int addToken_GUI(gridClass *grid, int col, tokenClass *token);
+
+int removeToken_GUI(gridClass *grid, tokenClass *token, int col);

@@ -328,7 +328,7 @@ void showGrid_GUI(gridClass *grid, WINDOW *win)
     wrefresh(win);
 }
 
-void initializeGameWin(WINDOW *gameWinBkgdShadow, WINDOW *gameWinBkgd, WINDOW *gameBoradWin, WINDOW *playerWin, WINDOW *moveChoiceWin, WINDOW *columnChoiceWin, gridClass *grid, char **players)
+void initializeGameWin(WINDOW *gameWinBkgdShadow, WINDOW *gameWinBkgd, WINDOW *gameBoradWin, WINDOW *playerWin, WINDOW *moveChoiceWin, WINDOW *columnChoiceWin, gridClass *grid, char **players, int player)
 {
     wrefresh(gameWinBkgdShadow);
     box(gameWinBkgd, 0, 0);
@@ -339,28 +339,13 @@ void initializeGameWin(WINDOW *gameWinBkgdShadow, WINDOW *gameWinBkgd, WINDOW *g
     centerPrint(gameBoradWin, 0, " Gameboard ");
     wrefresh(gameBoradWin);
 
-    box(playerWin, 0, 0);
-    centerPrint(playerWin, 0, " Player ");
-    wattron(playerWin, A_UNDERLINE);
-    centerPrint(playerWin, 2, "Current player");
-    wattron(playerWin, COLOR_PAIR(5));
-    centerPrint(playerWin, 5, "  Player YELLOW  ");
-    wattroff(playerWin, COLOR_PAIR(5));
-    wattron(playerWin, COLOR_PAIR(6));
-    centerPrint(playerWin, 8, "  Player RED  ");
-    wattroff(playerWin, COLOR_PAIR(6));
-    wattroff(playerWin, A_UNDERLINE);
-
-    centerPrint(playerWin, 6, players[0]);
-    centerPrint(playerWin, 9, players[1]);
-
-    wrefresh(playerWin);
+    initializePlayerWin(playerWin, players, player);
 
     initializeMoveChoiceWin(moveChoiceWin);
 
-    int yBeg, xBeg, yMax, xMax;
+    int yBeg, xBeg, xMax;
     getbegyx(gameBoradWin, yBeg, xBeg);
-    getmaxyx(gameBoradWin, yMax, xMax);
+    xMax = getmaxx(gameBoradWin);
 
     mvwin(columnChoiceWin, yBeg + 2 + grid->col, ((xMax - grid->col * 3) / 2) + xBeg);
     wresize(columnChoiceWin, 1, (grid->col * 3) + 1);
@@ -374,6 +359,30 @@ void initializeMoveChoiceWin(WINDOW *moveChoiceWin)
     box(moveChoiceWin, 0, 0);
     centerPrint(moveChoiceWin, 0, " Action Selection ");
     wrefresh(moveChoiceWin);
+}
+
+void initializePlayerWin(WINDOW *playerWin, char **players, int player)
+{
+    werase(playerWin);
+    box(playerWin, 0, 0);
+    centerPrint(playerWin, 0, " Player ");
+    wattron(playerWin, A_UNDERLINE);
+    centerPrint(playerWin, 2, "Current player");
+    wattron(playerWin, COLOR_PAIR(5));
+    centerPrint(playerWin, 5, "  Player YELLOW  ");
+    wattroff(playerWin, COLOR_PAIR(5));
+    wattron(playerWin, COLOR_PAIR(6));
+    centerPrint(playerWin, 8, "  Player RED  ");
+    wattroff(playerWin, COLOR_PAIR(6));
+    wattroff(playerWin, A_UNDERLINE);
+
+    int currPlayer = (player == 1) ? 0 : 1;
+
+    centerPrint(playerWin, 3, players[currPlayer]);
+    centerPrint(playerWin, 6, players[0]);
+    centerPrint(playerWin, 9, players[1]);
+
+    wrefresh(playerWin);
 }
 
 int moveChoice_GUI(WINDOW *moveChoiceWin, int tokenNumber)
@@ -419,6 +428,13 @@ int moveChoice_GUI(WINDOW *moveChoiceWin, int tokenNumber)
             centerPrint(moveChoiceWin, 2 * choice + 2, items[choice]);
             wattroff(moveChoiceWin, COLOR_PAIR(3));
         }
+        werase(moveChoiceWin);
+        wattron(moveChoiceWin, COLOR_PAIR(8));
+        initializeMoveChoiceWin(moveChoiceWin);
+        centerPrint(moveChoiceWin, 4, items[choice]);
+        wattroff(moveChoiceWin, COLOR_PAIR(8));
+        wrefresh(moveChoiceWin);
+
         keypad(moveChoiceWin, FALSE);
         choice++;
     }
@@ -427,7 +443,6 @@ int moveChoice_GUI(WINDOW *moveChoiceWin, int tokenNumber)
         char items[2][15] = {{"  Add token   "}, {"     Quit     "}};
         for (int i = 0; i < 2; i++)
         {
-
             centerPrint(moveChoiceWin, 2 * i + 3, items[i]);
         }
         wrefresh(moveChoiceWin);
@@ -458,6 +473,13 @@ int moveChoice_GUI(WINDOW *moveChoiceWin, int tokenNumber)
             centerPrint(moveChoiceWin, 2 * choice + 3, items[choice]);
             wattroff(moveChoiceWin, COLOR_PAIR(3));
         }
+        werase(moveChoiceWin);
+        wattron(moveChoiceWin, COLOR_PAIR(8));
+        initializeMoveChoiceWin(moveChoiceWin);
+        centerPrint(moveChoiceWin, 4, items[choice]);
+        wattroff(moveChoiceWin, COLOR_PAIR(8));
+        wrefresh(moveChoiceWin);
+
         keypad(moveChoiceWin, FALSE);
         choice = (choice == 1) ? 3 : 1;
     }
@@ -542,6 +564,162 @@ int selectColumn_GUI(gridClass *grid, WINDOW *columnChoiceWin, int moveChoice, i
         wrefresh(columnChoiceWin);
     }
     werase(columnChoiceWin);
+    wrefresh(columnChoiceWin);
     keypad(columnChoiceWin, FALSE);
     return choice + 1;
+}
+
+void game_GUI(WINDOW *smallWin, WINDOW *smallWinShadow, WINDOW *gameWinBkgd, WINDOW *playerWin, WINDOW *moveChoiceWin, WINDOW *columnChoiceWin, WINDOW *gameBoardWin, gridClass *gameBoard, tokenClass *token, int *player, int *nbPlayers, int *toAlign, char **players)
+{
+    int column = 0;
+    int hasPlayed = 0;
+    int hasWon = -1;
+    int quit = 0;
+    int tie = 0;
+    int removedColumn = 0;
+    int moveChoice = 0;
+    while (hasWon < 0 && quit < 1 && tie < 1)
+    {
+        token->type = ((*player == 1) ? 'O' : 'X');
+        hasPlayed = 0;
+
+        initializePlayerWin(playerWin, players, *player);
+        wrefresh(playerWin);
+
+        if (*nbPlayers > 1 || *player == 1)
+        {
+            do
+            {
+                moveChoice = moveChoice_GUI(moveChoiceWin, gameBoard->tokenNumber);
+                switch (moveChoice)
+                {
+                case 1:
+                    column = selectColumn_GUI(gameBoard, columnChoiceWin, moveChoice, removedColumn);
+                    hasPlayed = addToken(gameBoard, column, token);
+                    removedColumn = 0;
+                    break;
+                case 2:
+                    column = selectColumn_GUI(gameBoard, columnChoiceWin, moveChoice, removedColumn);
+                    hasPlayed = removeToken(gameBoard, token, column);
+                    removedColumn = (hasPlayed > 0) ? column : 0;
+                    break;
+                case 3:
+                    saveToFile(gameBoard, (*player == 1) ? 2 : 1);
+                    quit = 1;
+                    break;
+                default:
+                    break;
+                }
+
+            } while (quit != 1 && hasPlayed != 1);
+        }
+        else
+        {
+            switch (aiAddOrRemove(gameBoard))
+            {
+            case 1:
+                do
+                {
+                    column = aiSelectColumn(gameBoard);
+                    hasPlayed = addToken(gameBoard, column, token);
+                } while (hasPlayed != 1);
+                break;
+            case 2:
+                do
+                {
+                    column = aiSelectColumn(gameBoard);
+                    hasPlayed = removeToken(gameBoard, token, column);
+                } while (hasPlayed != 1);
+                break;
+            default:
+                break;
+            }
+            delay(1500);
+        }
+        if (quit < 1)
+        {
+            showGrid_GUI(gameBoard, gameBoardWin);
+            hasWon = checkWinner(gameBoard, toAlign, token);
+            tie = checkTie(gameBoard);
+            if (hasWon > -1)
+            {
+                if (*nbPlayers > 1 || *player == 1)
+                {
+                    clear();
+                    refresh();
+                    werase(smallWin);
+                    box(smallWin, 0, 0);
+                    centerPrint(smallWin, 0, "  Congratulations  ");
+
+                    wattron(smallWin, COLOR_PAIR(9));
+                    wattron(smallWin, A_BOLD);
+                    int winner = (*player == 1) ? 0 : 1;
+                    centerPrint(smallWin, 3, players[winner]);
+                    centerPrint(smallWin, 4, "has won!");
+                    wattroff(smallWin, COLOR_PAIR(9));
+                    wattroff(smallWin, A_BOLD);
+
+                    smallWinShadow = createShadow(smallWin);
+                    wrefresh(smallWinShadow);
+                    wrefresh(smallWin);
+                }
+                else
+                {
+                    clear();
+                    refresh();
+                    werase(smallWin);
+                    box(smallWin, 0, 0);
+                    centerPrint(smallWin, 0, "  Try again  ");
+
+                    wattron(smallWin, COLOR_PAIR(9));
+                    wattron(smallWin, A_BOLD);
+                    centerPrint(smallWin, 3, "You lose, try again");
+                    wattroff(smallWin, COLOR_PAIR(9));
+                    wattroff(smallWin, A_BOLD);
+
+                    smallWinShadow = createShadow(smallWin);
+                    wrefresh(smallWinShadow);
+                    wrefresh(smallWin);
+                }
+            }
+            else if (tie > 0)
+            {
+                clear();
+                refresh();
+                werase(smallWin);
+                box(smallWin, 0, 0);
+                centerPrint(smallWin, 0, "  Tie  ");
+
+                wattron(smallWin, COLOR_PAIR(9));
+                wattron(smallWin, A_BOLD);
+                centerPrint(smallWin, 3, "The game is tied. Try again.");
+                wattroff(smallWin, COLOR_PAIR(9));
+                wattroff(smallWin, A_BOLD);
+
+                smallWinShadow = createShadow(smallWin);
+                wrefresh(smallWinShadow);
+                wrefresh(smallWin);
+            }
+            *player = (*player == 1) ? 0 : 1;
+        }
+        else
+        {
+            clear();
+            refresh();
+            werase(smallWin);
+            box(smallWin, 0, 0);
+            centerPrint(smallWin, 0, "  Game saved  ");
+
+            wattron(smallWin, COLOR_PAIR(9));
+            wattron(smallWin, A_BOLD);
+            centerPrint(smallWin, 3, "The game has been saved. To continue it");
+            centerPrint(smallWin, 4, "next time, select 'Continue last saved game'.");
+            wattroff(smallWin, COLOR_PAIR(9));
+            wattroff(smallWin, A_BOLD);
+
+            smallWinShadow = createShadow(smallWin);
+            wrefresh(smallWinShadow);
+            wrefresh(smallWin);
+        }
+    }
 }
