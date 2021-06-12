@@ -202,7 +202,7 @@ int playerNumChoice(WINDOW *smallWin, WINDOW *smallWinShadow)
     return choice;
 }
 
-void playerNames(WINDOW *smallWin, WINDOW *smallWinShadow, WINDOW *inputWin, int xMax, int *nbPlayers, char** players)
+void playerNames(WINDOW *smallWin, WINDOW *smallWinShadow, WINDOW *inputWin, int xMax, int *nbPlayers, char **players)
 {
     wresize(smallWin, 8, 50);
     smallWinShadow = createShadow(smallWin);
@@ -244,7 +244,8 @@ void playerNames(WINDOW *smallWin, WINDOW *smallWinShadow, WINDOW *inputWin, int
             errorOFF(inputWin, FALSE);
         }
     }
-    if(*nbPlayers == 1){
+    if (*nbPlayers == 1)
+    {
         players[1] = "Computer";
     }
 }
@@ -286,6 +287,261 @@ int gridSizeChoice(WINDOW *smallWin, WINDOW *smallWinShadow, WINDOW *input)
     return toAlign;
 }
 
-void showGame(){
-    
+void showGrid_GUI(gridClass *grid, WINDOW *win)
+{
+    int x = getmaxx(win);
+
+    for (int i = 0; i < grid->col + 1; i++)
+    {
+        wmove(win, 2, ((x - grid->col * 3) / 2) + 3 * i);
+
+        wattron(win, COLOR_PAIR(1));
+        wvline(win, ACS_VLINE, grid->lin);
+        wattroff(win, COLOR_PAIR(1));
+    }
+
+    for (int i = 0; i < grid->lin; i++)
+    {
+        for (int j = 0; j < grid->col; j++)
+        {
+            if (grid->grille[i][j] == 'O')
+            {
+
+                wattron(win, COLOR_PAIR(5));
+                mvwprintw(win, i + 2, (((x - grid->col * 3) / 2) + 3 * j) + 1, "  ");
+                wattroff(win, COLOR_PAIR(5));
+            }
+            else if (grid->grille[i][j] == 'X')
+            {
+                wattron(win, COLOR_PAIR(6));
+                mvwprintw(win, i + 2, (((x - grid->col * 3) / 2) + 3 * j) + 1, "  ");
+                wattroff(win, COLOR_PAIR(6));
+            }
+            else
+            {
+                wattron(win, COLOR_PAIR(2));
+                mvwprintw(win, i + 2, (((x - grid->col * 3) / 2) + 3 * j) + 1, "  ");
+                wattroff(win, COLOR_PAIR(2));
+            }
+        }
+    }
+    wrefresh(win);
+}
+
+void initializeGameWin(WINDOW *gameWinBkgdShadow, WINDOW *gameWinBkgd, WINDOW *gameBoradWin, WINDOW *playerWin, WINDOW *moveChoiceWin, WINDOW *columnChoiceWin, gridClass *grid, char **players)
+{
+    wrefresh(gameWinBkgdShadow);
+    box(gameWinBkgd, 0, 0);
+    centerPrint(gameWinBkgd, 0, " Connect N ");
+    wrefresh(gameWinBkgd);
+
+    box(gameBoradWin, 0, 0);
+    centerPrint(gameBoradWin, 0, " Gameboard ");
+    wrefresh(gameBoradWin);
+
+    box(playerWin, 0, 0);
+    centerPrint(playerWin, 0, " Player ");
+    wattron(playerWin, A_UNDERLINE);
+    centerPrint(playerWin, 2, "Current player");
+    wattron(playerWin, COLOR_PAIR(5));
+    centerPrint(playerWin, 5, "  Player YELLOW  ");
+    wattroff(playerWin, COLOR_PAIR(5));
+    wattron(playerWin, COLOR_PAIR(6));
+    centerPrint(playerWin, 8, "  Player RED  ");
+    wattroff(playerWin, COLOR_PAIR(6));
+    wattroff(playerWin, A_UNDERLINE);
+
+    centerPrint(playerWin, 6, players[0]);
+    centerPrint(playerWin, 9, players[1]);
+
+    wrefresh(playerWin);
+
+    initializeMoveChoiceWin(moveChoiceWin);
+
+    int yBeg, xBeg, yMax, xMax;
+    getbegyx(gameBoradWin, yBeg, xBeg);
+    getmaxyx(gameBoradWin, yMax, xMax);
+
+    mvwin(columnChoiceWin, yBeg + 2 + grid->col, ((xMax - grid->col * 3) / 2) + xBeg);
+    wresize(columnChoiceWin, 1, (grid->col * 3) + 1);
+    wbkgd(columnChoiceWin, COLOR_PAIR(2));
+    wrefresh(columnChoiceWin);
+}
+
+void initializeMoveChoiceWin(WINDOW *moveChoiceWin)
+{
+    werase(moveChoiceWin);
+    box(moveChoiceWin, 0, 0);
+    centerPrint(moveChoiceWin, 0, " Action Selection ");
+    wrefresh(moveChoiceWin);
+}
+
+int moveChoice_GUI(WINDOW *moveChoiceWin, int tokenNumber)
+{
+    initializeMoveChoiceWin(moveChoiceWin);
+
+    int choice = 0, curr = 0;
+    keypad(moveChoiceWin, TRUE);
+
+    if (tokenNumber > 0)
+    {
+        char items[3][15] = {{"  Add token   "}, {" Remove token "}, {"     Quit     "}};
+        for (int i = 0; i < 3; i++)
+        {
+
+            centerPrint(moveChoiceWin, 2 * i + 2, items[i]);
+        }
+        wrefresh(moveChoiceWin);
+        wattron(moveChoiceWin, COLOR_PAIR(3));
+        centerPrint(moveChoiceWin, 2 * choice + 2, items[choice]);
+        wattroff(moveChoiceWin, COLOR_PAIR(3));
+
+        while ((curr = wgetch(moveChoiceWin)) != KEY_ENTER)
+        {
+
+            centerPrint(moveChoiceWin, 2 * choice + 2, items[choice]);
+
+            switch (curr)
+            {
+            case KEY_UP:
+                choice--;
+                choice = (choice < 0) ? 2 : choice;
+                break;
+
+            case KEY_DOWN:
+                choice++;
+                choice = (choice > 2) ? 0 : choice;
+                break;
+            default:
+                break;
+            }
+            wattron(moveChoiceWin, COLOR_PAIR(3));
+            centerPrint(moveChoiceWin, 2 * choice + 2, items[choice]);
+            wattroff(moveChoiceWin, COLOR_PAIR(3));
+        }
+        keypad(moveChoiceWin, FALSE);
+        choice++;
+    }
+    else
+    {
+        char items[2][15] = {{"  Add token   "}, {"     Quit     "}};
+        for (int i = 0; i < 2; i++)
+        {
+
+            centerPrint(moveChoiceWin, 2 * i + 3, items[i]);
+        }
+        wrefresh(moveChoiceWin);
+        wattron(moveChoiceWin, COLOR_PAIR(3));
+        centerPrint(moveChoiceWin, 2 * choice + 3, items[choice]);
+        wattroff(moveChoiceWin, COLOR_PAIR(3));
+
+        while ((curr = wgetch(moveChoiceWin)) != KEY_ENTER)
+        {
+
+            centerPrint(moveChoiceWin, 2 * choice + 3, items[choice]);
+
+            switch (curr)
+            {
+            case KEY_UP:
+                choice--;
+                choice = (choice < 0) ? 1 : choice;
+                break;
+
+            case KEY_DOWN:
+                choice++;
+                choice = (choice > 1) ? 0 : choice;
+                break;
+            default:
+                break;
+            }
+            wattron(moveChoiceWin, COLOR_PAIR(3));
+            centerPrint(moveChoiceWin, 2 * choice + 3, items[choice]);
+            wattroff(moveChoiceWin, COLOR_PAIR(3));
+        }
+        keypad(moveChoiceWin, FALSE);
+        choice = (choice == 1) ? 3 : 1;
+    }
+    return choice;
+}
+
+int selectColumn_GUI(gridClass *grid, WINDOW *columnChoiceWin, int moveChoice, int removedColumn)
+{
+    keypad(columnChoiceWin, TRUE);
+    int choice = 0, curr = 0;
+
+    if (moveChoice == 1)
+    {
+        while (grid->grille[0][choice] != '_' || (choice + 1) == removedColumn)
+        {
+            choice++;
+        }
+    }
+    else
+    {
+        while (grid->grille[grid->col - 1][choice] == '_')
+        {
+            choice++;
+        }
+    }
+
+    wattron(columnChoiceWin, COLOR_PAIR(7));
+    werase(columnChoiceWin);
+    mvwprintw(columnChoiceWin, 0, (3 * choice) + 1, "/\\");
+    wattroff(columnChoiceWin, COLOR_PAIR(7));
+    wrefresh(columnChoiceWin);
+
+    while ((curr = wgetch(columnChoiceWin)) != KEY_ENTER)
+    {
+        switch (curr)
+        {
+        case KEY_RIGHT:
+            if (moveChoice == 1)
+            {
+                do
+                {
+                    choice++;
+                    choice = (choice > grid->col - 1) ? 0 : choice;
+                } while (grid->grille[0][choice] != '_' || (choice + 1) == removedColumn);
+            }
+            else
+            {
+                do
+                {
+                    choice++;
+                    choice = (choice > grid->col - 1) ? 0 : choice;
+                } while (grid->grille[grid->col - 1][choice] == '_');
+            }
+            break;
+
+        case KEY_LEFT:
+            if (moveChoice == 1)
+            {
+                do
+                {
+                    choice--;
+                    choice = (choice < 0) ? grid->col - 1 : choice;
+                } while (grid->grille[0][choice] != '_' || (choice + 1) == removedColumn);
+            }
+            else
+            {
+                do
+                {
+                    choice--;
+                    choice = (choice < 0) ? grid->col - 1 : choice;
+                } while (grid->grille[grid->col - 1][choice] == '_');
+            }
+            break;
+
+        default:
+            break;
+        }
+        wattron(columnChoiceWin, COLOR_PAIR(7));
+        werase(columnChoiceWin);
+        mvwprintw(columnChoiceWin, 0, (3 * choice) + 1, "/\\");
+        wattroff(columnChoiceWin, COLOR_PAIR(7));
+        wrefresh(columnChoiceWin);
+    }
+    werase(columnChoiceWin);
+    keypad(columnChoiceWin, FALSE);
+    return choice + 1;
 }

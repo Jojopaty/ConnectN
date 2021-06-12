@@ -1,6 +1,7 @@
 {
     "files.associations": {
         "connectn.h": "c",
-        "stdio.h": "c"
+        "stdio.h": "c",
+        "wchar.h": "c"
     }
 }

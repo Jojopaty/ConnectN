@@ -5,6 +5,7 @@
 #include <colors.h>
 #include <ncurses.h>
 #include <locale.h>
+#include <wchar.h>
 
 typedef struct
 {
@@ -281,3 +282,13 @@ int playerNumChoice(WINDOW *smallWin, WINDOW *smallWinShadow);
 void playerNames(WINDOW *smallWin, WINDOW *smallWinShadow, WINDOW *input, int xMax, int *nbPlayers, char ** players);
 
 int gridSizeChoice(WINDOW *smallWin, WINDOW *smallWinShadow, WINDOW *input);
+
+void showGrid_GUI(gridClass *grid, WINDOW* win);
+
+void initializeGameWin(WINDOW *gameWinBkgdShadow, WINDOW *gameWinBkgd, WINDOW *gameBoradWin, WINDOW *playerWin, WINDOW *moveChoiceWin, WINDOW *columnChoiceWin, gridClass *grid, char** players);
+
+void initializeMoveChoiceWin(WINDOW *moveChoiceWin);
+
+int moveChoice_GUI(WINDOW *moveChoiceWin, int tokenNumber);
+
+int selectColumn_GUI(gridClass *grid, WINDOW *columnChoiceWin, int moveChoice, int removedColumn);
