@@ -214,11 +214,12 @@ int checkDiagBotTop(gridClass *grid, int N, tokenClass *token);
 void saveToFile(gridClass *grid, int player);
 
 /**
- * @brief 
+ * @brief Function for loadinf the game from a previously saved game.
  * 
- * @param grid 
- * @param player 
- * @return int 
+ * @param grid Pointer on gridClass to store the loaded grid and data to.
+ * @param player Pointer on int storing the next player to play.
+ * @param align Pointer on int storing the number of tokens to align to win the game.
+ * @return int The next player to play : 0 for player 1 or 1 for player 2.
  */
 int loadFromFile(gridClass *grid, int *player, int *align);
 
@@ -229,114 +230,113 @@ int loadFromFile(gridClass *grid, int *player, int *align);
 void consoleClear();
 
 /**
- * @brief Funtion that checks the input of an integer
+ * @brief Funtion that checks the input of an integer.
  * 
- * @return int The desired integer or -INT_MAX if not valid
+ * @return int The desired integer or -INT_MAX if not valid.
  */
 int safeIntInput();
 
 /**
- * @brief 
+ * @brief Function for pausinf the game for some time.
  * 
- * @param milliseconds 
+ * @param milliseconds How long to pause the program, in milliseconds.
  */
 void delay(int milliseconds);
 
 /*----------------- GUI functions -----------------*/
 
 /**
- * @brief 
+ * @brief Function used to lauch and initialize the game with GUI
  * 
- * @param gameBoard 
- * @param token 
- * @param toAlign 
- * @param nbPlayers 
- * @param player 
+ * @param gameBoard Pointer on gridClass storing the data about the grid.
+ * @param token Pointer on tokenClass used to store the data about the last added token.
+ * @param toAlign Pointer on int storing the number of tokens to align to win the game.
+ * @param nbPlayers Pointer on int storing the number of players (1 if on players against AI or 2 if player vs player).
+ * @param player Pointer on int storing the next player to play (1 for yellow or 2 for red).
  */
 void gui(gridClass *gameBoard, tokenClass *token, int *toAlign, int *nbPlayers, int *player);
 
+/**
+ * @brief Create a Shadow to the specified window.
+ * 
+ * @param window The window to create the shadow of.
+ * @return WINDOW* Pointer on window of the shadow.
+ */
 WINDOW *createShadow(WINDOW *window);
 
 /**
- * @brief 
+ * @brief Function used to check if a user entry is an int. 
  * 
- * @param win 
- * @return int 
+ * @param win The win the user inputs text or numbers to.
+ * @return int The int entered or - INT_MAX if it wansn't an int.
  */
 int safeIntInput_GUI(WINDOW *win);
 
 /**
- * @brief 
+ * @brief Function used to print in the center of a specified window at a specified line.
  * 
- * @param win 
- * @param title 
- * @param line 
+ * @param win The window th print to.
+ * @param title The text to print.
+ * @param line The line to print to.
  */
 void centerPrint(WINDOW *win, int line, char *title);
 
 /**
- * @brief Create a Shadow object
+ * @brief Function used to set a speficied windo in error mode (for example when the user entered a wrong input).
  * 
- * @param window 
- * @return WINDOW* 
- */
-WINDOW *createShadow(WINDOW *window);
-
-/**
- * @brief 
- * 
- * @param win 
+ * @param win The window to set in error mode.
  */
 void errorON(WINDOW *win, int box);
 
 /**
- * @brief 
+ * @brief Function used to reset un specified window from error mode.
  * 
- * @param win 
+ * @param win The window to reset from error mode.
  */
 void errorOFF(WINDOW *win, int box);
+
 /**
- * @brief 
+ * @brief Function used to set text in strong standout (blink, bold and underlined) in a specified window.
  * 
- * @param win 
+ * @param win The window to print text in strong standout mode to.
  */
 void strongStandoutON(WINDOW *win);
 
 /**
- * @brief 
+ * @brief Function used to reset text from strong standout in a specified window.
  * 
- * @param win 
+ * @param win The window to reset standard mode to.
  */
 void strongStandoutOFF(WINDOW *win);
 
 /**
- * @brief 
+ * @brief Function used to print the startup animation (characters printing afeter each other) in the center of the console.
  * 
- * @param yMax 
- * @param xMax 
+ * @param yMax The number of lines of the console.
+ * @param xMax The number of columns of the console.
  */
 void startupAnimation(int yMax, int xMax);
 
 /**
- * @brief 
+ * @brief Function used to show the startup menu.
  * 
- * @param menuWin 
- * @param menuWinShadow 
- * @return int 
+ * @param menuWin Pointer on window to print the menu to.
+ * @param menuWinShadow Pointer on window of the shadow of the previous window.
+ * @return int The index of the choice of the user (1 for new game, 2 for load last saved game and 3 for quit).
  */
 int startupMenu(WINDOW *menuWin, WINDOW *menuWinShadow);
 
 /**
- * @brief 
+ * @brief Function for showing a window and ask the number of players to the user.
  * 
- * @param smallWin 
- * @param smallWinShadow 
- * @return int 
+ * @param smallWin Pointer on window to print and ask the user the number of players.
+ * @param smallWinShadow Pointer on window of the shadow of the previous window.
+ * @return int Returns the amount of players (1 for player VS AI or 2 for player VS player).
  */
 int playerNumChoice(WINDOW *smallWin, WINDOW *smallWinShadow);
 
 /**
- * @brief 
+ * @brief Function for asking the number of players 
  * 
  * @param smallWin 
  * @param smallWinShadow 
