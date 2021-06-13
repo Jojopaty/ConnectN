@@ -1,9 +1,9 @@
 /**
  * @file ConnectN.c
- * @author your name (you@domain.com)
- * @brief 
- * @version 0.1
- * @date 2021-06-13
+ * @author Edgar Boule (edgar.boule@utbm.fr), Thibaut Lemaître (thibaut.lemaitre@utbm.fr), Matis Ressicaud (matis.ressicaud@utbm.fr)
+ * @brief File storing all the functions used in the non GUI version of the game.
+ * @version 1.0
+ * @date 2021-05-05
  * 
  * @copyright Copyright (c) 2021
  * 

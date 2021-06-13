@@ -1,8 +1,8 @@
 /**
  * @file main.c
  * @author Edgar Boule (edgar.boule@utbm.fr), Thibaut Lemaître (thibaut.lemaitre@utbm.fr), Matis Ressicaud (matis.ressicaud@utbm.fr)
- * @brief 
- * @version 0.1
+ * @brief The main function used to run the game depending on different parameters.
+ * @version 1.0
  * @date 2021-05-05
  * 
  * @copyright Copyright (c) 2021

@@ -1,9 +1,9 @@
 /**
  * @file ConnectN.h
- * @author your name (you@domain.com)
- * @brief 
- * @version 0.1
- * @date 2021-06-13
+ * @author Edgar Boule (edgar.boule@utbm.fr), Thibaut Lemaître (thibaut.lemaitre@utbm.fr), Matis Ressicaud (matis.ressicaud@utbm.fr)
+ * @brief Headers of the functions used in the project
+ * @version 1.0
+ * @date 2021-05-05
  * 
  * @copyright Copyright (c) 2021
  * 
@@ -322,7 +322,7 @@ void startupAnimation(int yMax, int xMax);
  * 
  * @param menuWin Pointer on window to print the menu to.
  * @param menuWinShadow Pointer on window of the shadow of the previous window.
- * @return int The index of the choice of the user (1 for new game, 2 for load last saved game and 3 for quit).
+ * @return int The index of the choice of the user (0 for new game, 1 for load last saved game and 2 for quit).
  */
 int startupMenu(WINDOW *menuWin, WINDOW *menuWinShadow);
 
@@ -336,121 +336,121 @@ int startupMenu(WINDOW *menuWin, WINDOW *menuWinShadow);
 int playerNumChoice(WINDOW *smallWin, WINDOW *smallWinShadow);
 
 /**
- * @brief Function for asking the number of players 
+ * @brief Function for asking the names of the players
  * 
- * @param smallWin 
- * @param smallWinShadow 
- * @param input 
- * @param xMax 
- * @param nbPlayers 
- * @param players 
+ * @param smallWin The window ask the user to.
+ * @param smallWinShadow The shadow of the previous window.
+ * @param input The window for the user to input to.
+ * @param xMax The number of columns of the console.
+ * @param nbPlayers The number of players.
+ * @param players The next player to play.
  */
 void playerNames(WINDOW *smallWin, WINDOW *smallWinShadow, WINDOW *input, int xMax, int *nbPlayers, char ** players);
 
 /**
- * @brief 
+ * @brief Function used to ask the user the size of the grid.
  * 
- * @param smallWin 
- * @param smallWinShadow 
- * @param input 
- * @return int 
+ * @param smallWin The window to ask the player.
+ * @param smallWinShadow The shadow of the previous window
+ * @param input The window for the user to input to.
+ * @return int The number of tokens to align to win the game.
  */
 int gridSizeChoice(WINDOW *smallWin, WINDOW *smallWinShadow, WINDOW *input);
 
 /**
- * @brief 
+ * @brief Function used to print the grid in a specified window.
  * 
- * @param grid 
- * @param win 
+ * @param grid Pointer on gridClass storing the data of the grid.
+ * @param win The window to print the grid to.
  */
 void showGrid_GUI(gridClass *grid, WINDOW* win);
 
 /**
- * @brief 
+ * @brief Function for initializing the game window, its shadow, the players' window and and the move choice window.
  * 
- * @param gameWinBkgdShadow 
- * @param gameWinBkgd 
- * @param gameBoradWin 
- * @param playerWin 
- * @param moveChoiceWin 
- * @param columnChoiceWin 
- * @param grid 
- * @param players 
- * @param player 
+ * @param gameWinBkgdShadow The game window's shadow.
+ * @param gameWinBkgd The game window
+ * @param gameBoradWin The window of the gameBoard (where to print the grid).
+ * @param playerWin The players' window (where to print the next player and who has which color).
+ * @param moveChoiceWin The window where the user can choose what move will he do.
+ * @param columnChoiceWin The window where the user can choose which column to add or remove the token to.
+ * @param grid The grid to print.
+ * @param players The names of the players.
+ * @param player The next player to play.
  */
 void initializeGameWin(WINDOW *gameWinBkgdShadow, WINDOW *gameWinBkgd, WINDOW *gameBoradWin, WINDOW *playerWin, WINDOW *moveChoiceWin, WINDOW *columnChoiceWin, gridClass *grid, char** players, int player);
 
 /**
- * @brief 
+ * @brief Function used to initialize the move choice window depending on the size of the grid.
  * 
- * @param moveChoiceWin 
+ * @param moveChoiceWin The window to initialize.
  */
 void initializeMoveChoiceWin(WINDOW *moveChoiceWin);
 
 /**
- * @brief 
+ * @brief Function used to initialize the players' window and printing the next player's name.
  * 
- * @param playerWin 
- * @param players 
- * @param player 
+ * @param playerWin The window to initialize and print the names to.
+ * @param players The names of the players.
+ * @param player The next player to play.
  */
 void initializePlayerWin(WINDOW *playerWin, char **players, int player);
 
 /**
- * @brief 
+ * @brief Function for the user to choose what to do (add or remove a token or quit the game).
  * 
- * @param moveChoiceWin 
- * @param tokenNumber 
- * @return int 
+ * @param moveChoiceWin The window where the user makes its choice.
+ * @param tokenNumber The number of tokens used propose remove token only if there is at least 1 token in the grid.
+ * @return int The choice of the player (1 for adding a token, 2 for removing and 3 for quitting and saving the game to a file).
  */
 int moveChoice_GUI(WINDOW *moveChoiceWin, int tokenNumber);
 
 /**
- * @brief 
+ * @brief Function used to enable the user to choose which column to add or remove the token to. The functions only proposes columns eligible for the choosed action (the choosed move). 
  * 
- * @param grid 
- * @param columnChoiceWin 
- * @param moveChoice 
- * @param removedColumn 
- * @return int 
+ * @param grid The grid storing the number of columns and the game.
+ * @param columnChoiceWin The window used to ask the user which column to play with.
+ * @param moveChoice The previously choosed move (add or remove).
+ * @param removedColumn The column the user removed a token at the last round.
+ * @return int The index of the column to play with.
  */
 int selectColumn_GUI(gridClass *grid, WINDOW *columnChoiceWin, int moveChoice, int removedColumn);
 
 /**
- * @brief 
+ * @brief Function used to run the game, save it or determine wheather there is a winner or not or a tie.
  * 
- * @param smallWin 
- * @param smallWinShadow 
- * @param gameWinBkgd 
- * @param playerWin 
- * @param moveChoiceWin 
- * @param columnChoiceWin 
- * @param gameBoardWin 
- * @param gameBoard 
- * @param token 
- * @param player 
- * @param nbPlayers 
- * @param toAlign 
- * @param players 
+ * @param smallWin The window used to print informations to the user.
+ * @param smallWinShadow The shadow of the previous window.
+ * @param gameWinBkgd The background of the game.
+ * @param playerWin The players' window used to print the next player's name.
+ * @param moveChoiceWin The window used to ask the action of the player.
+ * @param columnChoiceWin The window used to ask which column to play with to the player.
+ * @param gameBoardWin The window used to print the grid to.
+ * @param gameBoard Pointer on gridClass storing data about the grid.
+ * @param token Pointer on tokenClass storing the data about the last added token.
+ * @param player The number of the next player to play.
+ * @param nbPlayers The amount of players.
+ * @param toAlign The amount of tokens to align to win the game.
+ * @param players The names of the players.
  */
 void game_GUI(WINDOW* smallWin, WINDOW* smallWinShadow, WINDOW *gameWinBkgd, WINDOW *playerWin, WINDOW *moveChoiceWin, WINDOW *columnChoiceWin, WINDOW *gameBoardWin, gridClass *gameBoard, tokenClass *token, int *player, int *nbPlayers, int *toAlign, char **players);
 
 /**
- * @brief 
+ * @brief Function used to add a token to the grid.
  * 
- * @param grid 
- * @param col 
- * @param token 
- * @return int 
+ * @param grid The grid to add the token to.
+ * @param col The index of the column to add the token to.
+ * @param token Pointer on tokenClass to store the coordinates of the added token and to get its type (X or O).
+ * @return int Either 1 if the adding was successful or 0 if impossible.
  */
 int addToken_GUI(gridClass *grid, int col, tokenClass *token);
 
 /**
- * @brief 
+ * @brief Function used to remove a token to the grid.
  * 
- * @param grid 
- * @param token 
- * @param col 
+ * @param grid The grid to remove the token to.
+ * @param token Pointer on tokenClass storing the data about the last token added.
+ * @param col The index of the column to remove the token to.
  * @return int 
  */
 int removeToken_GUI(gridClass *grid, tokenClass *token, int col);
