@@ -1,3 +1,14 @@
+/**
+ * @file gui.c
+ * @author your name (you@domain.com)
+ * @brief 
+ * @version 0.1
+ * @date 2021-06-13
+ * 
+ * @copyright Copyright (c) 2021
+ * 
+ */
+
 #include <ConnectN.h>
 
 #define KEY_ENTER_FIXED 0x0A // BugFix from ncurses library
@@ -134,7 +145,6 @@ void gui(gridClass *gameBoard, tokenClass *token, int *toAlign, int *nbPlayers, 
 
             break;
         case 1:
-            // printf(BLU "Loading last saved game\n" RST);
             if (loadFromFile(gameBoard, player, toAlign) == -1)
             {
                 clear();
