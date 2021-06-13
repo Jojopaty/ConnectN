@@ -1,6 +1,6 @@
 #include <ConnectN.h>
 
-#define KEY_ENTER 0x0A // BugFix from ncurses library
+#define KEY_ENTER_FIXED 0x0A // BugFix from ncurses library
 
 void gui(gridClass *gameBoard, tokenClass *token, int *toAlign, int *nbPlayers, int *player)
 {
@@ -344,7 +344,7 @@ int startupMenu(WINDOW *menuWin, WINDOW *menuWinShadow)
     mvwprintw(menuWin, 2 * choice + 4, 3, "%s", currentItem);
     wattroff(menuWin, COLOR_PAIR(3));
 
-    while ((curr = wgetch(menuWin)) != KEY_ENTER)
+    while ((curr = wgetch(menuWin)) != KEY_ENTER_FIXED)
     {
         sprintf(currentItem, "%-24s", items[choice]);
         mvwprintw(menuWin, 2 * choice + 4, 3, "%s", currentItem);
@@ -397,7 +397,7 @@ int playerNumChoice(WINDOW *smallWin, WINDOW *smallWinShadow)
     mvwprintw(smallWin, 4, 17 + ((choice - 1) * 10), " %d ", choice);
     wattroff(smallWin, COLOR_PAIR(3));
 
-    while ((curr = wgetch(smallWin)) != KEY_ENTER)
+    while ((curr = wgetch(smallWin)) != KEY_ENTER_FIXED)
     {
         mvwprintw(smallWin, 4, 17 + ((choice - 1) * 10), " %d ", choice);
 
@@ -629,7 +629,7 @@ int moveChoice_GUI(WINDOW *moveChoiceWin, int tokenNumber)
         centerPrint(moveChoiceWin, 2 * choice + 2, items[choice]);
         wattroff(moveChoiceWin, COLOR_PAIR(3));
 
-        while ((curr = wgetch(moveChoiceWin)) != KEY_ENTER)
+        while ((curr = wgetch(moveChoiceWin)) != KEY_ENTER_FIXED)
         {
 
             centerPrint(moveChoiceWin, 2 * choice + 2, items[choice]);
@@ -674,7 +674,7 @@ int moveChoice_GUI(WINDOW *moveChoiceWin, int tokenNumber)
         centerPrint(moveChoiceWin, 2 * choice + 3, items[choice]);
         wattroff(moveChoiceWin, COLOR_PAIR(3));
 
-        while ((curr = wgetch(moveChoiceWin)) != KEY_ENTER)
+        while ((curr = wgetch(moveChoiceWin)) != KEY_ENTER_FIXED)
         {
 
             centerPrint(moveChoiceWin, 2 * choice + 3, items[choice]);
@@ -736,7 +736,7 @@ int selectColumn_GUI(gridClass *grid, WINDOW *columnChoiceWin, int moveChoice, i
     wattroff(columnChoiceWin, COLOR_PAIR(7));
     wrefresh(columnChoiceWin);
 
-    while ((curr = wgetch(columnChoiceWin)) != KEY_ENTER)
+    while ((curr = wgetch(columnChoiceWin)) != KEY_ENTER_FIXED)
     {
         switch (curr)
         {
